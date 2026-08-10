@@ -1,0 +1,19 @@
+# .swiftlint.yml
+#
+# SwiftLint config for Apin. Rule set: Swift defaults + line_length raised to a
+# 120-column warning tier, plus opt-in rules for the coding-standards conventions
+# agreed in planning/engineering-plan.md (trailing closures preferred). See
+# memory/coding-standards.md (promoted from this cycle's engineering plan) and
+# tasks/task-graph.md T1.
+
+excluded:
+  - .build
+  - ApinCore/.build
+  - DerivedData
+  - Apin.xcodeproj
+
+opt_in_rules:
+  - trailing_closure
+
+line_length:
+  warning: 120

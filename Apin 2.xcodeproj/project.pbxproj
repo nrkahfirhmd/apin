@@ -1,0 +1,925 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04AF34BFFC33689C6EF3318B /* AskApinShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B8C02BD22060A2F13FE633 /* AskApinShortcutsProvider.swift */; };
+		1564DF10B615C8C05E217B79 /* JournalWidgetStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00E35DCF06C3FE25182B45D /* JournalWidgetStoreTests.swift */; };
+		17BD897BCE7BEBE56F47926B /* JournalDateRangeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A73A147FC5175F7D2044A4 /* JournalDateRangeFilterView.swift */; };
+		20F37A81DF41294EF6C508D8 /* AskAndSaveServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD5B7EB24295AD277292DC9 /* AskAndSaveServicing.swift */; };
+		26ADCD2344733ECB26B2D9DB /* JournalWidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEDFB87C65130F6A146C79 /* JournalWidgetStore.swift */; };
+		27C777858463DE07131EE94A /* StatusMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2429D3BF3C9C5025A6E7BDCB /* StatusMessageView.swift */; };
+		29A9A574A030298CB879CA19 /* AskAndSaveServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */; };
+		30C62E71DEBC631BFA916B13 /* FakeJournalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEBFEC94762CA4CF7EE2417 /* FakeJournalRepository.swift */; };
+		3830FF3F14B7D490A5A89358 /* ApinWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */; };
+		4615AA952763438B97C26E23 /* ApinWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4652B99380405A789ECFD42E /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F14A290F7DCDF75BD74141 /* AskView.swift */; };
+		57AB36E97B6C88289C395056 /* AskViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0938D36112AD147B50397E9D /* AskViewModelTests.swift */; };
+		5A32849B8A3092FFA2CF4156 /* AskScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B0C68C2A3B967A5EC2862D /* AskScaffold.swift */; };
+		5EEF7EAD38421AF9FA9B8980 /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = 460256CE5DC28F7B00A6ACA5 /* ApinCore */; };
+		712E5726599F4FFDC4335D3F /* JournalEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498F0E45542BF9F8F5C2FF8E /* JournalEmptyStateView.swift */; };
+		7AB0A1A12AB02CB58AD34F6F /* AskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AD43BB4197AE17BF5F3814 /* AskViewModel.swift */; };
+		86BD55A57AE38273B1638DDB /* JournalEntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55342C1A2E70E52070347FFE /* JournalEntryDetailView.swift */; };
+		8F8F141E09433B30F1AFB1A2 /* ApinWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25A44ABF199FFC7B8988C07 /* ApinWidget.swift */; };
+		943793FC0252143CEED24418 /* ApinWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */; };
+		951D5514E1F61317ECFF4D07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD9A29E202FCE56556278EF1 /* Assets.xcassets */; };
+		99108FA7DD414006B582EAA0 /* JournalDaySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A663FC481ED844D2C50EC1 /* JournalDaySection.swift */; };
+		9ACCBBD0763D9CBAADDEA3EE /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F5BE63677E434036F5A0E /* JournalListView.swift */; };
+		A19FE26CB4CE03F4C8A702D8 /* FakeAssistantSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEEC7397CAFD3D33C53B664 /* FakeAssistantSession.swift */; };
+		A2109F324367A4DE0E0010C5 /* CapabilityUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10943CDFE9B7123CC4D3323 /* CapabilityUnavailableView.swift */; };
+		A4F16B489414C326A1BEE5C0 /* ApinWidgetEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98ECDA61B464AC3D68113A8 /* ApinWidgetEntryTests.swift */; };
+		A8BD29133550F45B1231D163 /* WidgetsScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE1D77A19D707D404ADA9F /* WidgetsScaffold.swift */; };
+		AD3EDE822877D2FB8BF37ADB /* CapabilityUnavailableCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53094A9F583E33BC3B7B2943 /* CapabilityUnavailableCopy.swift */; };
+		B35C9C7284B85B1AEE84DF31 /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = 95A4859F0E99BFF113716F0E /* ApinCore */; };
+		B928B16CD600928088CA19E1 /* ApinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B28B5DC4DA1C02623C3535F /* ApinApp.swift */; };
+		BA15CFD2E90160DEEA23FF39 /* JournalEntryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FC5D3E649C14DBF0F3764F /* JournalEntryRow.swift */; };
+		BB9BCC31E42573194F1476CF /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = B86BED82B3C9392C1505BD24 /* ApinCore */; };
+		BF2F31825BA396ABBAEF9834 /* ApinAppModelConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6396F223A1EB4FF06C88D /* ApinAppModelConfigurationTests.swift */; };
+		C0F60CB721EA31D91937DBE8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7198F4928EDA8F564909CD3 /* ContentView.swift */; };
+		CCC10510EF1E35781835BE32 /* ApinWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FAC45B78050B791CFED454 /* ApinWidgetBundle.swift */; };
+		CFBED04BDF3EFEF78A5F23EE /* JournalWidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEDFB87C65130F6A146C79 /* JournalWidgetStore.swift */; };
+		D9785860077B18474DD095A6 /* ApinWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9CC9F6186F109B85D840CD /* ApinWidgetProvider.swift */; };
+		DEC16AA6D1975570C28B8FA8 /* ApinWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC48FC647CA735F12E7A3D4 /* ApinWidgetEntryView.swift */; };
+		E37320E7B87AF2ADB7BA1534 /* AssistantSessionProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B4DD16EA1CA803DFDD6BCE /* AssistantSessionProviding.swift */; };
+		E82FEC315B2D031DB8D9DF4B /* JournalScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */; };
+		E965B08A44B7531104C71BF1 /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1352D37CBBD1499CBAEAE9C7 /* ApinCore */; };
+		F3CFE0E37D65F5EA04A3EB63 /* AskAndSaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA51B5143725767AEEE81FFF /* AskAndSaveService.swift */; };
+		F57FDD52F6ED53EF4B1BE4C4 /* CapabilityStatusCopyProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6609284A14AA875C7A51BB57 /* CapabilityStatusCopyProviderTests.swift */; };
+		FB08068D1F030F78CF339086 /* FakeCapabilityGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */; };
+		FF483EFB3723F7128DAAB8F8 /* JournalEntryDetailViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B5B167CE2047EEB03B416 /* JournalEntryDetailViewTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		055EA1EBA1A780360BEA33A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2116F00E8394D552765B50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8813B0627F413CEB7C571DC5;
+			remoteInfo = ApinWidgetExtension;
+		};
+		6698E92B1EE1D48C17E30624 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2116F00E8394D552765B50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C79F6010460A2C47597D3AA;
+			remoteInfo = Apin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		810B48F2030ACB4EFF38FE82 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4615AA952763438B97C26E23 /* ApinWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0938D36112AD147B50397E9D /* AskViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewModelTests.swift; sourceTree = "<group>"; };
+		2429D3BF3C9C5025A6E7BDCB /* StatusMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMessageView.swift; sourceTree = "<group>"; };
+		2DD5B7EB24295AD277292DC9 /* AskAndSaveServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveServicing.swift; sourceTree = "<group>"; };
+		31AD43BB4197AE17BF5F3814 /* AskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewModel.swift; sourceTree = "<group>"; };
+		3926956806509CC3FBE65F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		41A663FC481ED844D2C50EC1 /* JournalDaySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDaySection.swift; sourceTree = "<group>"; };
+		498F0E45542BF9F8F5C2FF8E /* JournalEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEmptyStateView.swift; sourceTree = "<group>"; };
+		53094A9F583E33BC3B7B2943 /* CapabilityUnavailableCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapabilityUnavailableCopy.swift; sourceTree = "<group>"; };
+		53D6396F223A1EB4FF06C88D /* ApinAppModelConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinAppModelConfigurationTests.swift; sourceTree = "<group>"; };
+		55342C1A2E70E52070347FFE /* JournalEntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryDetailView.swift; sourceTree = "<group>"; };
+		56A73A147FC5175F7D2044A4 /* JournalDateRangeFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateRangeFilterView.swift; sourceTree = "<group>"; };
+		5FEBFEC94762CA4CF7EE2417 /* FakeJournalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeJournalRepository.swift; sourceTree = "<group>"; };
+		5FEEC7397CAFD3D33C53B664 /* FakeAssistantSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAssistantSession.swift; sourceTree = "<group>"; };
+		606AC13D8B8EDE2B7C8955E6 /* ApinWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ApinWidget.entitlements; sourceTree = "<group>"; };
+		64B0C68C2A3B967A5EC2862D /* AskScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskScaffold.swift; sourceTree = "<group>"; };
+		6609284A14AA875C7A51BB57 /* CapabilityStatusCopyProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapabilityStatusCopyProviderTests.swift; sourceTree = "<group>"; };
+		6AC48FC647CA735F12E7A3D4 /* ApinWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetEntryView.swift; sourceTree = "<group>"; };
+		6C1E3F21C047DE406304F73D /* Apin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Apin.entitlements; sourceTree = "<group>"; };
+		70B8C02BD22060A2F13FE633 /* AskApinShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskApinShortcutsProvider.swift; sourceTree = "<group>"; };
+		7F9F5BE63677E434036F5A0E /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ApinWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveServiceTests.swift; sourceTree = "<group>"; };
+		8B28B5DC4DA1C02623C3535F /* ApinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinApp.swift; sourceTree = "<group>"; };
+		96322F77844ED3D7821A943F /* Apin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Apin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		986928276723CE5C1489332F /* ApinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalScaffold.swift; sourceTree = "<group>"; };
+		9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApinWidgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A25A44ABF199FFC7B8988C07 /* ApinWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidget.swift; sourceTree = "<group>"; };
+		A98ECDA61B464AC3D68113A8 /* ApinWidgetEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetEntryTests.swift; sourceTree = "<group>"; };
+		AA9CC9F6186F109B85D840CD /* ApinWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetProvider.swift; sourceTree = "<group>"; };
+		B00E35DCF06C3FE25182B45D /* JournalWidgetStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalWidgetStoreTests.swift; sourceTree = "<group>"; };
+		B7F14A290F7DCDF75BD74141 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
+		BD9A29E202FCE56556278EF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C51B6CD3025F19C8EEF99D6A /* ApinCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ApinCore; sourceTree = SOURCE_ROOT; };
+		D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCapabilityGate.swift; sourceTree = "<group>"; };
+		DDBE1D77A19D707D404ADA9F /* WidgetsScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsScaffold.swift; sourceTree = "<group>"; };
+		E4FC5D3E649C14DBF0F3764F /* JournalEntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryRow.swift; sourceTree = "<group>"; };
+		E5EEDFB87C65130F6A146C79 /* JournalWidgetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalWidgetStore.swift; sourceTree = "<group>"; };
+		E9FAC45B78050B791CFED454 /* ApinWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetBundle.swift; sourceTree = "<group>"; };
+		EA51B5143725767AEEE81FFF /* AskAndSaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveService.swift; sourceTree = "<group>"; };
+		F10943CDFE9B7123CC4D3323 /* CapabilityUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapabilityUnavailableView.swift; sourceTree = "<group>"; };
+		F6B4DD16EA1CA803DFDD6BCE /* AssistantSessionProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantSessionProviding.swift; sourceTree = "<group>"; };
+		F7198F4928EDA8F564909CD3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetEntry.swift; sourceTree = "<group>"; };
+		FE7B5B167CE2047EEB03B416 /* JournalEntryDetailViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryDetailViewTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7FF6ABA112F083CE2D988949 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5EEF7EAD38421AF9FA9B8980 /* ApinCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8300B5E280B2903B4079CE15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B35C9C7284B85B1AEE84DF31 /* ApinCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		928D55EA579552F397BCABDE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB9BCC31E42573194F1476CF /* ApinCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BA87689EBFC2949521C4ADD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E965B08A44B7531104C71BF1 /* ApinCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2D4BDB1E78C2BBD3DD4AAF10 /* ApinWidgetTests */ = {
+			isa = PBXGroup;
+			children = (
+				A98ECDA61B464AC3D68113A8 /* ApinWidgetEntryTests.swift */,
+				B00E35DCF06C3FE25182B45D /* JournalWidgetStoreTests.swift */,
+			);
+			path = ApinWidgetTests;
+			sourceTree = "<group>";
+		};
+		33D5460FBE502038AFDAEEE5 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				DDBE1D77A19D707D404ADA9F /* WidgetsScaffold.swift */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		50D2BBB999EE4403F75C76AC /* ApinTests */ = {
+			isa = PBXGroup;
+			children = (
+				53D6396F223A1EB4FF06C88D /* ApinAppModelConfigurationTests.swift */,
+				88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */,
+				0938D36112AD147B50397E9D /* AskViewModelTests.swift */,
+				6609284A14AA875C7A51BB57 /* CapabilityStatusCopyProviderTests.swift */,
+				5FEEC7397CAFD3D33C53B664 /* FakeAssistantSession.swift */,
+				D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */,
+				5FEBFEC94762CA4CF7EE2417 /* FakeJournalRepository.swift */,
+				FE7B5B167CE2047EEB03B416 /* JournalEntryDetailViewTests.swift */,
+			);
+			path = ApinTests;
+			sourceTree = "<group>";
+		};
+		579F890E0C76665F4D474840 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96322F77844ED3D7821A943F /* Apin.app */,
+				986928276723CE5C1489332F /* ApinTests.xctest */,
+				82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */,
+				9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E3DECC9F370541BC019A9FC /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				6608D59A253353C59FD806E0 /* Ask */,
+				929E608EDE14ECEBB59F3B2C /* Journal */,
+				33D5460FBE502038AFDAEEE5 /* Widgets */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		6608D59A253353C59FD806E0 /* Ask */ = {
+			isa = PBXGroup;
+			children = (
+				EA51B5143725767AEEE81FFF /* AskAndSaveService.swift */,
+				2DD5B7EB24295AD277292DC9 /* AskAndSaveServicing.swift */,
+				64B0C68C2A3B967A5EC2862D /* AskScaffold.swift */,
+				B7F14A290F7DCDF75BD74141 /* AskView.swift */,
+				31AD43BB4197AE17BF5F3814 /* AskViewModel.swift */,
+				F6B4DD16EA1CA803DFDD6BCE /* AssistantSessionProviding.swift */,
+				53094A9F583E33BC3B7B2943 /* CapabilityUnavailableCopy.swift */,
+				F10943CDFE9B7123CC4D3323 /* CapabilityUnavailableView.swift */,
+			);
+			path = Ask;
+			sourceTree = "<group>";
+		};
+		661AF53298D83D259168280F /* AppIntents */ = {
+			isa = PBXGroup;
+			children = (
+				70B8C02BD22060A2F13FE633 /* AskApinShortcutsProvider.swift */,
+			);
+			path = AppIntents;
+			sourceTree = "<group>";
+		};
+		8A594258ABA300BFC21CBA95 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C51B6CD3025F19C8EEF99D6A /* ApinCore */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		929E608EDE14ECEBB59F3B2C /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				56A73A147FC5175F7D2044A4 /* JournalDateRangeFilterView.swift */,
+				41A663FC481ED844D2C50EC1 /* JournalDaySection.swift */,
+				498F0E45542BF9F8F5C2FF8E /* JournalEmptyStateView.swift */,
+				55342C1A2E70E52070347FFE /* JournalEntryDetailView.swift */,
+				E4FC5D3E649C14DBF0F3764F /* JournalEntryRow.swift */,
+				7F9F5BE63677E434036F5A0E /* JournalListView.swift */,
+				99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		951C1207EADFEE0023E5CB83 = {
+			isa = PBXGroup;
+			children = (
+				FBDF6FF90FA0A504F6823A2D /* Apin */,
+				50D2BBB999EE4403F75C76AC /* ApinTests */,
+				F3AF10EEE5F0E7492E83D2B1 /* ApinWidget */,
+				2D4BDB1E78C2BBD3DD4AAF10 /* ApinWidgetTests */,
+				8A594258ABA300BFC21CBA95 /* Packages */,
+				579F890E0C76665F4D474840 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA334B9F92706142B49D2885 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2429D3BF3C9C5025A6E7BDCB /* StatusMessageView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		F3AF10EEE5F0E7492E83D2B1 /* ApinWidget */ = {
+			isa = PBXGroup;
+			children = (
+				606AC13D8B8EDE2B7C8955E6 /* ApinWidget.entitlements */,
+				A25A44ABF199FFC7B8988C07 /* ApinWidget.swift */,
+				E9FAC45B78050B791CFED454 /* ApinWidgetBundle.swift */,
+				FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */,
+				6AC48FC647CA735F12E7A3D4 /* ApinWidgetEntryView.swift */,
+				AA9CC9F6186F109B85D840CD /* ApinWidgetProvider.swift */,
+				3926956806509CC3FBE65F1C /* Info.plist */,
+				E5EEDFB87C65130F6A146C79 /* JournalWidgetStore.swift */,
+			);
+			path = ApinWidget;
+			sourceTree = "<group>";
+		};
+		FBDF6FF90FA0A504F6823A2D /* Apin */ = {
+			isa = PBXGroup;
+			children = (
+				6C1E3F21C047DE406304F73D /* Apin.entitlements */,
+				8B28B5DC4DA1C02623C3535F /* ApinApp.swift */,
+				BD9A29E202FCE56556278EF1 /* Assets.xcassets */,
+				F7198F4928EDA8F564909CD3 /* ContentView.swift */,
+				661AF53298D83D259168280F /* AppIntents */,
+				AA334B9F92706142B49D2885 /* Common */,
+				5E3DECC9F370541BC019A9FC /* Features */,
+			);
+			path = Apin;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4C79F6010460A2C47597D3AA /* Apin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C382503272EE1086ACD9CBC /* Build configuration list for PBXNativeTarget "Apin" */;
+			buildPhases = (
+				3B7FEB3B9E914ADE43F19E1D /* Sources */,
+				8AC0A590DFB0F0C80FFDEC38 /* Resources */,
+				928D55EA579552F397BCABDE /* Frameworks */,
+				810B48F2030ACB4EFF38FE82 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08F75AC7BFB17193EABF02D5 /* PBXTargetDependency */,
+			);
+			name = Apin;
+			packageProductDependencies = (
+				B86BED82B3C9392C1505BD24 /* ApinCore */,
+			);
+			productName = Apin;
+			productReference = 96322F77844ED3D7821A943F /* Apin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		812DDCD0214C59A1B9F3FC8C /* ApinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 022D7C4B20E715A906C3A051 /* Build configuration list for PBXNativeTarget "ApinTests" */;
+			buildPhases = (
+				6AC7322ABB5E6D75B1EF9C7E /* Sources */,
+				8300B5E280B2903B4079CE15 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3CF98BEAAF3AF9D7F50CB577 /* PBXTargetDependency */,
+			);
+			name = ApinTests;
+			packageProductDependencies = (
+				95A4859F0E99BFF113716F0E /* ApinCore */,
+			);
+			productName = ApinTests;
+			productReference = 986928276723CE5C1489332F /* ApinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8813B0627F413CEB7C571DC5 /* ApinWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D29E1D315D9891E17F7F16F /* Build configuration list for PBXNativeTarget "ApinWidgetExtension" */;
+			buildPhases = (
+				C61A8C4915726EAED189D15B /* Sources */,
+				7FF6ABA112F083CE2D988949 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ApinWidgetExtension;
+			packageProductDependencies = (
+				460256CE5DC28F7B00A6ACA5 /* ApinCore */,
+			);
+			productName = ApinWidgetExtension;
+			productReference = 82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C5B29B27D0828B3973930731 /* ApinWidgetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 192E2360D219381BD8A2BDF8 /* Build configuration list for PBXNativeTarget "ApinWidgetTests" */;
+			buildPhases = (
+				E697EC7A49CA211C92A65B0F /* Sources */,
+				BA87689EBFC2949521C4ADD7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ApinWidgetTests;
+			packageProductDependencies = (
+				1352D37CBBD1499CBAEAE9C7 /* ApinCore */,
+			);
+			productName = ApinWidgetTests;
+			productReference = 9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C2116F00E8394D552765B50B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					4C79F6010460A2C47597D3AA = {
+						ProvisioningStyle = Automatic;
+					};
+					8813B0627F413CEB7C571DC5 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = A865D640C76D86640C087FFD /* Build configuration list for PBXProject "Apin 2" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 951C1207EADFEE0023E5CB83;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E49B082F33BA1F30EA44C6D1 /* XCLocalSwiftPackageReference "ApinCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 579F890E0C76665F4D474840 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4C79F6010460A2C47597D3AA /* Apin */,
+				812DDCD0214C59A1B9F3FC8C /* ApinTests */,
+				C5B29B27D0828B3973930731 /* ApinWidgetTests */,
+				8813B0627F413CEB7C571DC5 /* ApinWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8AC0A590DFB0F0C80FFDEC38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				951D5514E1F61317ECFF4D07 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3B7FEB3B9E914ADE43F19E1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B928B16CD600928088CA19E1 /* ApinApp.swift in Sources */,
+				F3CFE0E37D65F5EA04A3EB63 /* AskAndSaveService.swift in Sources */,
+				20F37A81DF41294EF6C508D8 /* AskAndSaveServicing.swift in Sources */,
+				04AF34BFFC33689C6EF3318B /* AskApinShortcutsProvider.swift in Sources */,
+				5A32849B8A3092FFA2CF4156 /* AskScaffold.swift in Sources */,
+				4652B99380405A789ECFD42E /* AskView.swift in Sources */,
+				7AB0A1A12AB02CB58AD34F6F /* AskViewModel.swift in Sources */,
+				E37320E7B87AF2ADB7BA1534 /* AssistantSessionProviding.swift in Sources */,
+				AD3EDE822877D2FB8BF37ADB /* CapabilityUnavailableCopy.swift in Sources */,
+				A2109F324367A4DE0E0010C5 /* CapabilityUnavailableView.swift in Sources */,
+				C0F60CB721EA31D91937DBE8 /* ContentView.swift in Sources */,
+				17BD897BCE7BEBE56F47926B /* JournalDateRangeFilterView.swift in Sources */,
+				99108FA7DD414006B582EAA0 /* JournalDaySection.swift in Sources */,
+				712E5726599F4FFDC4335D3F /* JournalEmptyStateView.swift in Sources */,
+				86BD55A57AE38273B1638DDB /* JournalEntryDetailView.swift in Sources */,
+				BA15CFD2E90160DEEA23FF39 /* JournalEntryRow.swift in Sources */,
+				9ACCBBD0763D9CBAADDEA3EE /* JournalListView.swift in Sources */,
+				E82FEC315B2D031DB8D9DF4B /* JournalScaffold.swift in Sources */,
+				27C777858463DE07131EE94A /* StatusMessageView.swift in Sources */,
+				A8BD29133550F45B1231D163 /* WidgetsScaffold.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AC7322ABB5E6D75B1EF9C7E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF2F31825BA396ABBAEF9834 /* ApinAppModelConfigurationTests.swift in Sources */,
+				29A9A574A030298CB879CA19 /* AskAndSaveServiceTests.swift in Sources */,
+				57AB36E97B6C88289C395056 /* AskViewModelTests.swift in Sources */,
+				F57FDD52F6ED53EF4B1BE4C4 /* CapabilityStatusCopyProviderTests.swift in Sources */,
+				A19FE26CB4CE03F4C8A702D8 /* FakeAssistantSession.swift in Sources */,
+				FB08068D1F030F78CF339086 /* FakeCapabilityGate.swift in Sources */,
+				30C62E71DEBC631BFA916B13 /* FakeJournalRepository.swift in Sources */,
+				FF483EFB3723F7128DAAB8F8 /* JournalEntryDetailViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C61A8C4915726EAED189D15B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F8F141E09433B30F1AFB1A2 /* ApinWidget.swift in Sources */,
+				CCC10510EF1E35781835BE32 /* ApinWidgetBundle.swift in Sources */,
+				3830FF3F14B7D490A5A89358 /* ApinWidgetEntry.swift in Sources */,
+				DEC16AA6D1975570C28B8FA8 /* ApinWidgetEntryView.swift in Sources */,
+				D9785860077B18474DD095A6 /* ApinWidgetProvider.swift in Sources */,
+				26ADCD2344733ECB26B2D9DB /* JournalWidgetStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E697EC7A49CA211C92A65B0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				943793FC0252143CEED24418 /* ApinWidgetEntry.swift in Sources */,
+				A4F16B489414C326A1BEE5C0 /* ApinWidgetEntryTests.swift in Sources */,
+				CFBED04BDF3EFEF78A5F23EE /* JournalWidgetStore.swift in Sources */,
+				1564DF10B615C8C05E217B79 /* JournalWidgetStoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		08F75AC7BFB17193EABF02D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8813B0627F413CEB7C571DC5 /* ApinWidgetExtension */;
+			targetProxy = 055EA1EBA1A780360BEA33A9 /* PBXContainerItemProxy */;
+		};
+		3CF98BEAAF3AF9D7F50CB577 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4C79F6010460A2C47597D3AA /* Apin */;
+			targetProxy = 6698E92B1EE1D48C17E30624 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1B525A5DAAC512AFB805FD04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2B33AB3A7BBEA303695F0755 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ApinWidget/ApinWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ApinWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apin Widget";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget;
+				PRODUCT_NAME = ApinWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		3A276975B4C2D4F4CF0CC474 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.tests;
+				PRODUCT_NAME = ApinTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Apin.app/Apin";
+			};
+			name = Debug;
+		};
+		501862C35A199C3A4181F24C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5800C5D89204D8A40B4F74EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ApinWidget/ApinWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ApinWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apin Widget";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget;
+				PRODUCT_NAME = ApinWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		62345B4E3424260A68087617 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget.tests;
+				PRODUCT_NAME = ApinWidgetTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		776B690AFD877C0060914656 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.tests;
+				PRODUCT_NAME = ApinTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Apin.app/Apin";
+			};
+			name = Release;
+		};
+		99D491C4F8BAAC7EE0264DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Apin/Apin.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Apin;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin;
+				PRODUCT_NAME = Apin;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BDEEDAA20DBFC9CF2A40D87E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget.tests;
+				PRODUCT_NAME = ApinWidgetTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ED1D590DC370771DB5FEFDAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Apin/Apin.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Apin;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin;
+				PRODUCT_NAME = Apin;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		022D7C4B20E715A906C3A051 /* Build configuration list for PBXNativeTarget "ApinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A276975B4C2D4F4CF0CC474 /* Debug */,
+				776B690AFD877C0060914656 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		192E2360D219381BD8A2BDF8 /* Build configuration list for PBXNativeTarget "ApinWidgetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDEEDAA20DBFC9CF2A40D87E /* Debug */,
+				62345B4E3424260A68087617 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5D29E1D315D9891E17F7F16F /* Build configuration list for PBXNativeTarget "ApinWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B33AB3A7BBEA303695F0755 /* Debug */,
+				5800C5D89204D8A40B4F74EF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8C382503272EE1086ACD9CBC /* Build configuration list for PBXNativeTarget "Apin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99D491C4F8BAAC7EE0264DFD /* Debug */,
+				ED1D590DC370771DB5FEFDAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A865D640C76D86640C087FFD /* Build configuration list for PBXProject "Apin 2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				501862C35A199C3A4181F24C /* Debug */,
+				1B525A5DAAC512AFB805FD04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E49B082F33BA1F30EA44C6D1 /* XCLocalSwiftPackageReference "ApinCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ApinCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1352D37CBBD1499CBAEAE9C7 /* ApinCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ApinCore;
+		};
+		460256CE5DC28F7B00A6ACA5 /* ApinCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ApinCore;
+		};
+		95A4859F0E99BFF113716F0E /* ApinCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ApinCore;
+		};
+		B86BED82B3C9392C1505BD24 /* ApinCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ApinCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C2116F00E8394D552765B50B /* Project object */;
+}

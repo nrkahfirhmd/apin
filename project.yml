@@ -1,0 +1,176 @@
+# project.yml
+#
+# XcodeGen spec for the Apin Xcode project (T1 scaffolding). Regenerate the
+# .xcodeproj with `xcodegen generate` after editing this file — do not hand-edit
+# Apin.xcodeproj directly.
+#
+# Deployment target is iOS 26.0, verified against Apple's FoundationModels
+# framework documentation (introducedAt: 26.0) as of this task. See T1 completion
+# notes in tasks/task-graph.md for the verification method.
+name: Apin
+options:
+  bundleIdPrefix: com.apin
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+
+packages:
+  ApinCore:
+    path: ApinCore
+
+targets:
+  Apin:
+    type: application
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Apin
+    dependencies:
+      - target: ApinWidgetExtension
+        embed: true
+      - package: ApinCore
+    # Added in T16: App Group entitlement so the `ApinWidget` extension can read the same
+    # SwiftData journal store as this app target (as of T18, `Apin/ApinApp.swift`'s
+    # `ModelContainer` actually points at this App Group container -- see T18 completion
+    # notes). XcodeGen writes/updates the `Apin/Apin.entitlements` plist at generate time
+    # from `properties` below.
+    #
+    # Added in T18: iCloud/CloudKit entitlement so the journal store's `ModelConfiguration
+    # (cloudKitDatabase: .automatic)` (`Apin/ApinApp.swift`) can actually sync via CloudKit.
+    # `iCloud.com.apin.app` is this app's default CloudKit container -- it must exist under
+    # a real Apple Developer account (Xcode's "Signing & Capabilities" > iCloud > CloudKit
+    # will create/register it automatically the first time this project is opened there with
+    # a real team selected) before CloudKit sync can work end to end; this repo/environment
+    # has no such account, so that step could not be performed here. See T18 completion
+    # notes for exactly what a human with Xcode + a real account needs to do next.
+    entitlements:
+      path: Apin/Apin.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.apin.app
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.apin.app
+        com.apple.developer.icloud-services:
+          - CloudKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.apin.app
+        PRODUCT_NAME: Apin
+        SWIFT_VERSION: "6.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Apin
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: YES
+
+  # Added in T7: the first XCTest target for the `Apin` app target (previously only
+  # ApinCoreTests existed, per T3's flagged debt). Covers `AskViewModel` state
+  # transitions. Kept minimal/additive — flagged for other tasks (T8, T9's search,
+  # etc.) that will also want app-level view model test coverage here.
+  ApinTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: ApinTests
+    dependencies:
+      - target: Apin
+      - package: ApinCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.apin.app.tests
+        PRODUCT_NAME: ApinTests
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: YES
+
+  # Added in T16: unit tests for the widget extension's deterministic, non-WidgetKit
+  # logic (`ApinWidgetEntry.make(from:)`, `JournalWidgetStore`). App extensions don't
+  # support a hosted XCTest bundle the way `Apin`/`ApinTests` do, so this compiles the
+  # relevant `ApinWidget/` source files directly (see `sources` below) rather than
+  # depending on `ApinWidgetExtension` as a test host.
+  ApinWidgetTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: ApinWidgetTests
+      - path: ApinWidget/ApinWidgetEntry.swift
+      - path: ApinWidget/JournalWidgetStore.swift
+    dependencies:
+      - package: ApinCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.apin.app.ApinWidget.tests
+        PRODUCT_NAME: ApinWidgetTests
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: YES
+
+  ApinWidgetExtension:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: ApinWidget
+    dependencies:
+      - package: ApinCore
+    # Added in T16: matches the `Apin` app target's App Group entitlement above, so this
+    # extension can read the shared journal store (`ApinWidget/JournalWidgetStore.swift`).
+    #
+    # Added in T18: matches the `Apin` app target's iCloud/CloudKit entitlement above.
+    # `JournalWidgetStore`'s `ModelConfiguration(url:)` defaults to `cloudKitDatabase:
+    # .automatic` (SwiftData's own default), so on a real device this extension needs the
+    # same iCloud entitlement as the app to open the now-CloudKit-mirrored store without
+    # erroring. `JournalWidgetStore.makeModelContainer()` already treats any failure here as
+    # "fall back to empty state" (`try?`), so a mismatch degrades gracefully rather than
+    # crashing even if this entitlement isn't resolvable in a given build environment.
+    entitlements:
+      path: ApinWidget/ApinWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.apin.app
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.apin.app
+        com.apple.developer.icloud-services:
+          - CloudKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.apin.app.ApinWidget
+        PRODUCT_NAME: ApinWidget
+        SWIFT_VERSION: "6.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: ApinWidget/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Apin Widget
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_STYLE: Automatic
+        SKIP_INSTALL: YES
+        ENABLE_PREVIEWS: YES
+
+schemes:
+  Apin:
+    build:
+      targets:
+        Apin: all
+        ApinWidgetExtension: all
+        ApinTests: [test]
+        ApinWidgetTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - ApinTests
+        - ApinWidgetTests
+  ApinWidgetExtension:
+    build:
+      targets:
+        ApinWidgetExtension: all
+    run:
+      config: Debug
