@@ -93,13 +93,13 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
 - **Opened:** Sprint 1 (gap present since T4/T7); explicitly logged as debt starting this
   `/remember` pass per reviewer's and QA's recommendation (previously undocumented anywhere
   durable).
-- **Status:** open. **Cycle 3 update:** T2 produced a precise, self-contained manual verification
-  script (`review/manual-verification/zero-network-check.md`) for Kv to execute on the physical
-  iPhone 17 — exact Instruments/Network Link Conditioner steps, exact pass/fail criteria, blank
-  Result section. This does not resolve the debt itself (Kv has not yet executed it or reported a
-  result), but the effort-to-fix is now "run an existing script," not "write one." See
-  `memory/decisions.md`'s 2026-08-11 "T4/T5/T10-equivalent device verification" entry; closing this
-  entry is T5's job once Kv reports back.
+- **Status:** resolved (Cycle 3, T5). Kv executed `review/manual-verification/zero-network-check.md`
+  on the physical iPhone 17 (11 August 2026) using Method A (Instruments' Network instrument),
+  covering app-open → question typed → "Ask" tapped → answer fully streamed → 15s after. Result:
+  **Pass** — zero connections/bytes attributed to the Apin process for the full window, no
+  anomalies noted. This is a genuine dynamic verification, not the prior static-analysis-only
+  argument. See `memory/decisions.md`'s 2026-08-11 "Zero-network check: dynamically verified,
+  Pass" entry.
 
 ### Unsupported-device/OS path only structurally verified, never manually exercised
 - **Where:** `Apin/Features/Ask/CapabilityUnavailableView.swift` /
@@ -138,6 +138,35 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
   `modelNotReady.png`) — this was previously missing (T3's first pass reported doing this in its
   chat summary but left no durable evidence, which `/review` correctly flagged as unverifiable;
   this rework actually performed and recorded it).
+
+### Recurring untracked/gitignored shadow Xcode project duplicates (`Apin 2.xcodeproj`, `Apin 3.xcodeproj`)
+- **Where:** repo root, `Apin 2.xcodeproj/` and `Apin 3.xcodeproj/` (both untracked, gitignored —
+  confirmed via `git status --porcelain --ignored`).
+- **What was skipped:** These are iCloud-Drive-regenerated shadow scaffolding (Xcode recreates
+  them whenever the iCloud-synced project is opened locally) — a different, ongoing symptom of the
+  same root cause already noted as a Cycle-3 addendum on the "Stray git-tracked duplicate
+  `Apin 2.xcodeproj`" entry below (that entry's fix removed the *tracked* duplicate; it explicitly
+  did not, and could not, stop Xcode from regenerating an *untracked*, gitignored one). First
+  independently confirmed present as **two** directories (not just one) by T2's Cycle-4 pre-build
+  stray-duplicate sweep, then reconfirmed unchanged by `/review`'s and `/qa`'s own independent
+  sweeps in the same cycle.
+- **Risk if unaddressed:** Confirmed harmless to build correctness — every `xcodebuild`/`xcodegen`
+  invocation this cycle targeted only the real `Apin.xcodeproj` explicitly, and both stray
+  directories are gitignored so they can never be accidentally committed. The risk is purely one of
+  confusion (a future `open *.xcodeproj`/Spotlight double-click landing on a stale shadow copy) and
+  repeated future re-discovery/re-flagging noise — same cost class as the already-resolved tracked
+  duplicate below.
+- **Effort to fix:** Trivial per-occurrence (`rm -rf "Apin 2.xcodeproj" "Apin 3.xcodeproj"`), but
+  since they are iCloud+Xcode-regenerated rather than a one-time artifact, removing them again would
+  not prevent recurrence — a durable fix would need to address *why* Xcode/iCloud keeps
+  materializing them (e.g. moving the repo out of iCloud Drive, or an Xcode/iCloud Drive setting),
+  which is a larger, Kv-owned decision, not a trivial cleanup task.
+- **Opened:** Cycle 4, T2 (flagged as a backlog candidate per its diagnostic-only scope;
+  re-confirmed unchanged by `/review`'s and `/qa`'s independent sweeps the same cycle).
+- **Status:** open. Distinct from the "Stray git-tracked duplicate `Apin 2.xcodeproj`" entry below
+  (resolved, Cycle 3) — that entry was about a *tracked* duplicate with a stale, wrong bundle
+  identifier; this entry is about *untracked, gitignored* shadow copies that regenerate on their own
+  and were never git-tracked at all.
 
 ### (Resolved during cycle, not open debt — historical record) `.gitignore` bare `*.md` defect
 - **Where:** repo-root `.gitignore`, line 1, introduced by T1's scaffolding.

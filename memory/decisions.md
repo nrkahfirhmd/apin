@@ -16,6 +16,152 @@ Owner: who/what decided (e.g. "planner agent", "Kv")
 
 <!-- Entries below this line, newest first -->
 
+### 2026-08-11 — iOS 26+ / A17 Pro-or-M-series-or-later minimum re-verified a fourth time (T5, Cycle 4), still no discrepancy — standing suggestion to retire the per-cycle check restated
+Context: Routine per-cycle spot-check (spec open question #1), same method as Cycle 2's T9 and
+Cycle 3's re-check (see the 2026-08-11 "iOS 26+ ... re-verified" entry further below) — a fresh
+live-doc fetch, not a restatement of the prior result.
+Decision: T5 live-fetched the same two Apple sources again today (`FoundationModels`/
+`SystemLanguageModel`'s markdown-mirror doc, and `https://www.apple.com/apple-intelligence/`) and
+found no change: iOS 26.0 floor unchanged, A17 Pro (iPhone 15 Pro/Pro Max) still the
+minimum-eligible iPhone chip, matching `project.yml`'s `deploymentTarget: "26.0"` (all 4 relevant
+targets) and all 6 `@available` annotations in `ApinCore/Sources/AI/`, cross-checked directly. No
+discrepancy found — no source edit made. Full findings: `tasks/task-graph.md` T5's "Findings"
+subsection. This is the fourth independent check across four cycles (2026-08-10 original, Cycle
+2's T9, Cycle 3's re-check, this cycle's T5) to land on the identical result — restating, not
+deciding, the standing suggestion already made in Cycle 3's and this cycle's plan that Kv may want
+to consider retiring this from active per-cycle tracking now that it has never once moved.
+Owner: task-runner (T5, Cycle 4)
+
+### 2026-08-11 — New Siri/Spotlight invocation re-check script produced and handed to Kv (T3, Cycle 4); T4 stays blocked, fourth consecutive cycle on this device-verification class
+Context: Cycle 3's Siri/Spotlight latency-spike check (see the entry further below) surfaced a
+more fundamental gap than latency: typed Spotlight search produced no result from Apin at all.
+This cycle's backlog item 3 asked for a follow-up script isolating Siri-voice invocation from
+Spotlight-typed invocation, plus a re-check of the two named Settings toggles.
+Decision: T3 produced `review/manual-verification/siri-spotlight-invocation-recheck.md` — a new
+file, does not touch or overwrite Kv's existing `siri-spotlight-latency-spike.md` record. Part A
+covers Siri-voice invocation (two phrases plus an "Open Apin" fallback probe); Part B covers the
+Settings > Siri & Search > Apin toggle re-check; Part C cross-references T2's actual build/metadata
+findings (clean pass, no defect — see the entry above) rather than a stale placeholder. Result
+section is genuinely blank. As with Cycle 3's equivalent scripts, this task is done when the script
+exists and is hand-off-ready, not when the gap is actually diagnosed — T4 (record Kv's execution)
+stays `blocked`, contingent on Kv running the script on the physical device and reporting back,
+which did not happen inside this cycle's session. This is now the fourth consecutive cycle
+touching this class of device-verification blocker (zero-network and Indonesian fluency both
+closed in Cycle 3; Siri/Spotlight-related verification has now spanned Cycles 3 and 4) —
+`tasks/task-graph.md`'s T4 notes this is worth surfacing to Kv again rather than quietly carrying
+forward unremarked.
+Owner: task-runner (T3, Cycle 4) / Kv (execution and report, still pending)
+
+### 2026-08-11 — Build/metadata App Shortcut discoverability audit re-run for the current toolchain (T2, Cycle 4): clean pass, no defect found — rules out a build-level cause for the Siri/Spotlight invocation gap
+Context: follow-up (c) from the "Siri/Spotlight latency spike: inconclusive..." entry further
+below (Cycle 3) asked whether `AskApinShortcutsProvider`'s phrases are actually being
+donated/indexed at the build/metadata level. ADR 001's own Cycle-1 verification also flagged this
+mechanism as SDK-version-dependent and worth re-checking per toolchain.
+Decision: T2 re-ran ADR 001's exact Cycle-1 verification method against Xcode 26.6 (a newer SDK
+than ADR 001's original check). Result: clean pass, no drift — `extract.actionsdata`'s
+`autoShortcuts` array is populated with `AskApinIntent`, both phrases present, `shortTitle`/
+`systemImageName` match source; the `appintentsnltrainingprocessor` "No AppShortcuts found"
+failure signature did not recur for the `Apin` target (a superficially similar log line for
+`ApinWidgetExtension` is expected/by-design, not a recurrence — the widget has never had its own
+`AppShortcutsProvider`); `isDiscoverable` still `true`; no entitlement/Info.plist gap (the modern
+`AppShortcutsProvider` mechanism doesn't require the legacy SiriKit entitlement or
+`NSUserActivityTypes`). Full findings: `tasks/task-graph.md` T2's "Findings" subsection. This is a
+genuine negative result, not a non-finding — it narrows (does not replace) the ongoing
+Siri/Spotlight invocation-gap investigation to a runtime/device-state cause, which is what T3's new
+script (see the entry above) is designed to isolate. Also surfaced, not fixed: two
+untracked/gitignored stray `.xcodeproj` shadow copies at repo root — see
+`memory/technical-debt.md`'s new entry.
+Owner: task-runner (T2, Cycle 4)
+
+### 2026-08-11 — English-only language policy shipped in code (T1); spec open question #5 closed in code, not just as a recorded decision
+Context: Kv's sign-off ("Yes, English-only") was already recorded in this file's "Answer language
+resolved..." entry below, during Cycle 4's planning session. This cycle's implementation phase
+(T1) turned that sign-off into shipped code.
+Decision: T1 replaced `PersonalityBrief.placeholder.languagePolicy`
+(`ApinCore/Sources/AI/PersonalityBrief.swift`) — previously "Mirror the language of the question
+(English or Indonesian); default to English when the question's language is ambiguous." — with
+"Always respond in English, regardless of the question's language." No Indonesian-mirroring
+wording remains anywhere in the file. The file's header doc comment was also updated to state open
+question #5 is resolved (citing this file) rather than describing the policy as "carried forward
+unchanged." `PersonalitySystemInstructionBuilderTests.swift`'s one language-related assertion
+(`testDefaultOutputIncludesLanguageHandlingInstruction`) reads the property dynamically and passed
+unmodified — confirmed independently by `/review` (98/98 `ApinCore` tests) and `/qa` (131/131
+combined, plus a source-level sanity check that the composition pipeline picked up the new value
+correctly). Content-only change; `PersonalityBrief`'s shape (5 fields, same `init`) and
+`PersonalitySystemInstructionBuilder`'s composition logic are unchanged. Spec open question #5 is
+now closed both as a decision (already recorded below) and in shipped code.
+Owner: task-runner (T1, Cycle 4)
+
+### 2026-08-11 — Answer language resolved: English-only, mirror-language default dropped
+Context: Spec open question #5 (product half). Cycle 3's Indonesian fluency check failed 0/5 (see
+the entry below), paired with Kv's stated read "i think only English is enough." Per this
+project's established pattern, that signal alone wasn't treated as sufficient authorization —
+Cycle 4's `/plan` explicitly gated the corresponding backlog item (shrink `PersonalityBrief`'s
+`languagePolicy` to English-only) on an explicit sign-off in the planning session.
+Decision: Kv confirmed explicitly in Cycle 4's planning session (AskUserQuestion, "Yes,
+English-only" selected over "keep mirroring" / "defer"): shrink Apin to English-only, remove the
+Indonesian-mirroring language policy. This closes spec open question #5. Implementation is
+Cycle 4's backlog item 1 (`ApinCore/Sources/AI/PersonalityBrief.swift`'s `languagePolicy` field),
+now ungated and actionable.
+Owner: Kv
+
+### 2026-08-11 — Siri/Spotlight latency spike: inconclusive, blocked by an invocation-discoverability problem worse than latency itself
+Context: T4's manual verification script (`review/manual-verification/siri-spotlight-latency-spike.md`)
+asked Kv to time the deep-link handoff for both App Shortcut phrases ("Ask Apin a question" /
+"Ask a question in Apin"), 3 trials each, against a derived Go/No-Go threshold (10s ceiling, 1.5×
+baseline overhead). Kv attempted this on the physical iPhone 17 (11 August 2026, Spotlight typed).
+Decision: No Go/No-Go call can be made — Kv reports that typing the invocation phrase into
+Spotlight search **produced no result from Apin at all** (the App Shortcut didn't surface), so no
+trial could even start. By contrast, a question Apin had already answered in-app ("Who is the
+president of America") **did** surface as a top Spotlight search hit — meaning Spotlight's
+content-indexing path works, but the App Shortcut *invocation* path (`AskApinShortcutsProvider` /
+`AskApinIntent`) does not appear to be discoverable via typed Spotlight search on this device, as
+of this check. Baseline, all 3 trial readings, method, and Go/No-Go are unrecorded because the
+invocation never got that far. This is a more fundamental gap than the latency question T4 set out
+to answer, and per T4's own script it's out of scope for T5 to silently fix — flagging as a new
+backlog candidate for the next `/plan`: (a) re-attempt via Siri voice (not just Spotlight typed) to
+isolate whether this is Spotlight-specific, (b) re-check the "Show in Search" / "Learn from this
+App" Settings toggles the script's Prerequisites section calls out, (c) if still unreproducible,
+investigate whether `AskApinShortcutsProvider`'s App Shortcut phrases are actually being
+donated/indexed. Spec open question #3's remainder (Spotlight/Siri latency budget) stays open;
+T13's shipped deep-link is unaffected regardless (per the script's own "Regardless of outcome").
+Owner: Kv (execution/report) / task-runner (T5, recording) — investigation and resolution owned by
+a future cycle
+
+### 2026-08-11 — Indonesian fluency check: Fail (0/5); Kv's product read leans English-only
+Context: T3's manual verification script (`review/manual-verification/indonesian-fluency-check.md`)
+asked Kv to run 5 representative Indonesian questions through the Ask flow on the physical iPhone
+17 and judge fluency against concrete pass/fail criteria, per the 2026-08-10 "Answer-language
+mirroring... implemented as assumed; Indonesian support still runtime-unverified" entry below.
+Decision: Kv ran all 5 questions (11 August 2026) — **Overall: Fail, 0/5**. Every question failed:
+Q1 and Q5 (factual) answered in English despite being asked in Indonesian; Q2 and Q3 mixed
+Indonesian with untranslated English sentences; Q4 (the longer/complex question) couldn't produce
+an answer at all, apparently due to unsupported language/length combination; Q2 additionally
+couldn't fetch the requested journal data. This is a clean technical fail per the script's own
+criteria, not a borderline call. Separately, Kv's own read on the product question (should Apin
+mirror English/Indonesian at all): **"i think only English is enough."** Per the script's explicit
+framing, this technical result does not by itself resolve the product question (spec open question
+#5's product half) — but Kv's stated leaning, combined with a 0/5 technical fail, is a strong
+signal. No code change made in T5 (per its scope: a result surfacing a defect is a new backlog
+item, not something T5 silently absorbs) — flagging shrinking the mirror-language feature to
+English-only as a strong candidate for the next `/plan` to formally decide and scope, rather than
+leaving the current mirror-language default shipped as-is with a known-broken Indonesian path.
+Owner: Kv (execution, product read) / task-runner (T5, recording) — formal scope decision owned by
+the next `/plan`
+
+### 2026-08-11 — Zero-network check: dynamically verified, Pass
+Context: T2's manual verification script (`review/manual-verification/zero-network-check.md`)
+asked Kv to dynamically confirm (via Instruments or Network Link Conditioner) that the Ask flow
+makes zero network requests, closing the gap left by the static-analysis-only argument recorded in
+`memory/technical-debt.md`'s "Zero network requests..." entry.
+Decision: Kv ran Method A (Instruments' Network instrument) on the physical iPhone 17
+(11 August 2026), capturing the full window from app-open through 15s after the answer finished
+streaming. Result: **Pass** — zero connections/bytes attributed to the Apin process for the entire
+window, no anomalies noted. This is a genuine dynamic verification (not the prior static-only
+grep argument) and closes the debt entry — see `memory/technical-debt.md`'s corresponding entry,
+now marked resolved.
+Owner: Kv (execution) / task-runner (T5, recording)
+
 ### 2026-08-11 — Personality brief resolved: "Apin" is an Apple Intelligence pun, tone playful/cheerful, voice modeled on Crow Armbrust (*Trails of Cold Steel*)
 Context: spec open question #2, re-flagged as still-unresolved every cycle since it first shipped
 as a placeholder (see the 2026-08-11 "Personality brief for 'Apin' still unresolved as of Cycle

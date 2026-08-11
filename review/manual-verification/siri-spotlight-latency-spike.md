@@ -191,17 +191,14 @@ this script's result as blocking anything currently shipped.
 
 ## Result
 
-*(Leave blank until you've actually run this. Fill in after execution — do not pre-fill or
-guess.)*
-
-- **Date run:**
-- **Invocation(s) tried (Siri voice / Spotlight typed / both):**
-- **Official Apple figure found? (source URL, or "none found, checked as described above"):**
+- **Date run:** 11 August 2026
+- **Invocation(s) tried (Siri voice / Spotlight typed / both):** Spotlight typed
+- **Official Apple figure found? (source URL, or "none found, checked as described above"):** none found
 - **Baseline (in-app, no Siri/Spotlight) reading(s):**
-- **Trial 1 reading (phrase used):**
+- **Trial 1 reading (phrase used):** 
 - **Trial 2 reading (phrase used):**
 - **Trial 3 reading (phrase used):**
 - **Method used (A / B / both):**
 - **Go / No-Go:**
 - **Notes (anything unexpected — e.g. which prompt UI Siri/Spotlight actually showed for the
-  missing query, any timeout/error UI seen, device state warm vs. cold launch, etc.):**
+  missing query, any timeout/error UI seen, device state warm vs. cold launch, etc.):** I tried to ask question through iPhone search feature, but it doesn't produce any result from Apin. But instead, if I ask something that already answered in-app, "Who is the president of America", Apin answers become top hit in iPhone search feature.

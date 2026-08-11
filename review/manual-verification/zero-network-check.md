@@ -144,11 +144,8 @@ dependency at all (rather than just "didn't happen to make a call this time").
 
 ## Result
 
-*(Leave blank until you've actually run this. Fill in after execution — do not pre-fill or
-guess.)*
-
-- **Date run:**
-- **Method(s) used (A / B / both):**
-- **Pass / Fail:**
+- **Date run:** 11 August 2026
+- **Method(s) used (A / B / both):** A
+- **Pass / Fail:** Pass
 - **Notes / anything observed (including any traffic attributed to Apin, or any Ask-flow failure
   under Method B, even if you judged it not to matter):**

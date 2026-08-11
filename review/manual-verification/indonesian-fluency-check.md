@@ -138,19 +138,16 @@ your notes without re-running the check.
 
 ## Result
 
-*(Leave blank until you've actually run this. Fill in after execution — do not pre-fill or
-guess.)*
-
-- **Date run:**
+- **Date run:** 11 August 2026
 - **Per-question results (fluent-pass / fluent-fail, with a one-line note each):**
-  1. Q1 (ibu kota — factual):
-  2. Q2 (entri jurnal minggu ini — factual, personal data):
-  3. Q3 (semangat menulis jurnal — conversational):
-  4. Q4 (kebiasaan menulis jurnal — longer/complex):
-  5. Q5 (ibu kota, rephrased — factual consistency):
-- **Overall Pass / Fail:**
+  1. Q1 (ibu kota — factual): fail, answered in English
+  2. Q2 (entri jurnal minggu ini — factual, personal data): fail, still added a sentence with English and cannot fetch data
+  3. Q3 (semangat menulis jurnal — conversational): fail, still added a sentence with English
+  4. Q4 (kebiasaan menulis jurnal — longer/complex): fail, couldn't get an anser because of unsupported language
+  5. Q5 (ibu kota, rephrased — factual consistency): fail, answered in English and didn't explain
+- **Overall Pass / Fail:** 0/5
 - **Notes (specific failure details if any — untranslated fragments, broken grammar, wrong
-  language, factual errors, etc.):**
+  language, factual errors, etc.):** mixed up Indonesian and English sentence, cannot fetch journal data, and if long, cannot answer because language not supported
 - **Your read on the separate product question (should Apin mirror English/Indonesian at all,
   independent of today's technical result) — optional, but helpful for whoever records this in
-  `memory/decisions.md`:**
+  `memory/decisions.md`:** i think only English is enough

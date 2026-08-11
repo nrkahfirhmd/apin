@@ -18,6 +18,43 @@ Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### Sprint 4 — 2026-08-11 (cycle 4, language-scope closure + Spotlight invocation diagnosis)
+- **Goal:** Ship the now-ungated English-only language-policy content swap (spec open question #5,
+  sign-off already recorded in Cycle 4's planning session), re-run the build/metadata App Shortcut
+  discoverability audit against the current toolchain, produce a new manual verification script
+  isolating Siri-voice vs. Spotlight-typed invocation, and perform the routine iOS-version-floor
+  spot-check — a deliberately small cycle, no new architecture, per `planning/engineering-plan.md`.
+- **Shipped:** T1 (English-only `languagePolicy` content swap,
+  `ApinCore/Sources/AI/PersonalityBrief.swift`, header doc comment updated — closes spec open
+  question #5 in code, not just as a recorded decision), T2 (build/metadata App Shortcut audit
+  re-run on Xcode 26.6 — clean pass, no defect, rules out a build-level cause for the Siri/Spotlight
+  invocation gap and narrows the investigation to a runtime/device-state cause), T3 (new manual
+  verification script `review/manual-verification/siri-spotlight-invocation-recheck.md`, isolating
+  Siri-voice invocation from typed Spotlight search, re-checking the two named Settings toggles,
+  cross-referencing T2's findings, blank Result section handed to Kv), T5 (routine iOS
+  26+/A17-Pro-or-later re-check, fourth independent confirmation across four cycles, no
+  discrepancy).
+- **Not shipped:** T4 (record Kv's execution of T3's script) stays `blocked` — contingent on Kv
+  running the script on the physical device and reporting back, which did not happen inside this
+  cycle's session. Fourth consecutive cycle touching this class of device-verification blocker
+  (Cycle 1: no hardware; Cycle 2: no device-driving tooling; Cycle 3: scripts existed, execution
+  pending Kv's time; Cycle 4: a new script exists, execution still pending).
+- **QA verdict:** Passed, ready for release. 131/131 tests (98 `ApinCore` + 26 `ApinTests` + 7
+  `ApinWidgetTests`, unchanged — T1 is a content-only value swap covered dynamically by an existing
+  test; T2/T3/T5 added no testable source), 0 regressions, 0 SwiftLint violations, clean
+  `xcodebuild build`/`test` on the `Apin` scheme. The App Group/iCloud identifier drift bug class
+  (which bit this project twice) was re-checked from source and confirmed absent. T2's
+  build/metadata findings were independently reproduced by `/qa` with a fresh build, not just
+  re-read from its report.
+- **Notable decisions:** No new ADR this cycle (content/diagnostic/routine-check only, nothing
+  rising to lasting architectural impact). See `memory/decisions.md` for four new entries this
+  cycle: T1's implementation-closure entry, T2's clean-audit entry, T3's script-handoff entry, and
+  T5's fourth re-confirmation entry. See `memory/technical-debt.md` for the new open entry
+  (untracked/gitignored shadow `Apin 2.xcodeproj`/`Apin 3.xcodeproj` duplicates, distinct from the
+  already-resolved *tracked*-duplicate entry). See `memory/implementation-patterns.md` for the
+  newly-documented "Findings subsection in `tasks/task-graph.md`" pattern, now confirmed reusable
+  across three cycles (Cycle 2's T9, Cycle 3's T5, this cycle's T2 and T5).
+
 ### Sprint 3 — 2026-08-11 (cycle 3, personality content + human-in-the-loop device verification)
 - **Goal:** Ship the personality brief content swap (closing spec open question #2) and produce
   three precise manual verification scripts for Kv to execute on the physical iPhone 17 (zero-

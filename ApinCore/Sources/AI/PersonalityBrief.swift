@@ -16,8 +16,9 @@
 // The static property is still named `.placeholder` because
 // `PersonalitySystemInstructionBuilder.swift` defaults to it by that name — renaming it
 // would be a structural change outside this task's content-only scope. Open question #5
-// (mirror-question-language product decision) remains unresolved and untouched by this
-// task; `languagePolicy` below is carried forward unchanged.
+// (mirror-question-language product decision) is resolved as of Kv's 2026-08-11 sign-off
+// (see `memory/decisions.md`): responses are English-only, with no mirror-language
+// behavior. `languagePolicy` below reflects that decision.
 
 /// Isolated, swappable description of Apin's personality, tone, style, guardrails, and
 /// language-handling policy. Construct a new value (or replace `.placeholder`) to change
@@ -75,7 +76,6 @@ extension PersonalityBrief {
             "Admit uncertainty rather than fabricating an answer.",
             "Wit and charm must never come at the cost of a direct, useful answer."
         ],
-        languagePolicy: "Mirror the language of the question (English or Indonesian); "
-            + "default to English when the question's language is ambiguous."
+        languagePolicy: "Always respond in English, regardless of the question's language."
     )
 }

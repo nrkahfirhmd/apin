@@ -91,3 +91,25 @@ Different from coding-standards.md (rules) — this is "here's how we solved X b
 - **First used in:** T11 (`JournalQuery.tagFilter`/`applyTagFilter(to:)` for `JournalEntry.tags`),
   Sprint 2. See `memory/adrs/003-in-memory-post-fetch-tag-filtering.md` for the full architectural
   writeup.
+
+### Diagnostic/verification task records findings as a subsection in `tasks/task-graph.md`, not a new file
+- **Use when:** a task is purely investigative/diagnostic (re-running a build-level audit,
+  re-fetching live documentation to cross-check an existing assumption) and produces no app code
+  and no standalone deliverable of its own — the task's output *is* its findings, not a code change
+  or a new document under `review/manual-verification/`.
+- **Approach:** append a **Findings** subsection directly under the task's own section in
+  `tasks/task-graph.md`, dated, citing exactly what was checked and the actual result (pass/fail,
+  discrepancy/no-discrepancy) rather than restating a prior cycle's result from memory. `/review`
+  and `/qa` read this subsection directly (not a separate file) to verify the task; `/remember`
+  folds it into `memory/decisions.md` and/or `memory/technical-debt.md` as a lighter-weight
+  decision entry. Multiple diagnostic tasks in the same wave can append their own subsections
+  without conflicting, since each writes only under its own task's header — confirmed conflict-free
+  by `/review`'s ground-truth diff read even when two such tasks (e.g. Cycle 4's T2 and T5) run in
+  adjacent waves.
+- **Avoid when:** the task produces a deliverable meant for someone *outside* the task-graph loop
+  to act on (e.g. a manual verification script for Kv to execute on a physical device) — that
+  belongs in its own file under `review/manual-verification/`, not buried in `tasks/task-graph.md`,
+  so it can be handed off cleanly.
+- **First used in:** Cycle 2's T9 (iOS version floor re-check), Cycle 3's T5 (recording
+  device-verification results), Cycle 4's T2 (App Shortcut build/metadata audit) and T5 (iOS
+  version floor re-check) — four occurrences across three cycles, confirmed reusable.
