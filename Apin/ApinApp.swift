@@ -39,7 +39,7 @@ struct ApinApp: App {
     /// assertions, mirroring that test's pattern — `ApinTests` and `ApinWidgetTests` are
     /// separate targets with no shared dependency, so this can only be enforced as two
     /// independent regression pins on the same literal values, not a single shared constant.
-    static let appGroupIdentifier = "group.com.kv.apin"
+    static let appGroupIdentifier = "group.com.apin.app"
     static let storeFileName = "ApinJournal.sqlite"
 
     /// Shared across the SwiftUI environment (for `@Query`, e.g. T9's journal list) and
@@ -92,7 +92,7 @@ struct ApinApp: App {
     ///
     /// CloudKit note: `cloudKitDatabase: .automatic` mirrors this store to the signed-in
     /// user's private CloudKit database using the app's default container
-    /// (`iCloud.com.kv.apin`, see the `com.apple.developer.icloud-container-identifiers`
+    /// (`iCloud.com.apin.app`, see the `com.apple.developer.icloud-container-identifiers`
     /// entitlement in `project.yml`). Conflict resolution across devices is handled by
     /// SwiftData/Core Data's CloudKit mirroring delegate, which is last-writer-wins at the
     /// *field* level per synced record (not whole-object): if the same `JournalEntry` is
