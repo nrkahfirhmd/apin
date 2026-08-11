@@ -4,8 +4,11 @@
 // SwiftData model for a single journal entry: one asked question and its answer.
 // See tasks/task-graph.md T6.
 //
-// `tags` is a placeholder field for T20 (tagging) — unused this cycle, defaults to an
-// empty array so existing entries remain valid once tagging UI lands.
+// `tags` (T11): manually entered/edited via `JournalEntryDetailView`, persisted through
+// `JournalRepository.save(_:)`, and filterable via `JournalQuery.search(keyword:dateRange:tag:)`
+// (see that type's `tagFilter` doc comment for why tag filtering is applied in memory rather
+// than as part of the SwiftData `#Predicate`). Defaults to an empty array so pre-T11 entries
+// remain valid.
 //
 // T18: dropped `@Attribute(.unique)` from `id` and added property-level default values to
 // every stored property. Both are hard SwiftData+CloudKit requirements, not style choices:
@@ -33,7 +36,7 @@ public final class JournalEntry {
     public var question: String = ""
     public var answer: String = ""
     public var createdAt: Date = Date()
-    /// Placeholder for T20 (tagging). Unused this cycle; defaults to empty.
+    /// User-entered tags (T11): edited via `JournalEntryDetailView`, defaults to empty.
     public var tags: [String] = []
 
     public init(

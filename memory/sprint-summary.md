@@ -18,6 +18,61 @@ Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### Sprint 2 — 2026-08-11 (cycle 2, hardening + open-decision closure)
+- **Goal:** Close the four release-readiness gaps carried in `memory/technical-debt.md`, resolve
+  or re-confirm the four open product/UX decisions in `memory/decisions.md` plus spec open
+  question #1, and pick up the cycle-1 deferred Nice-to-have backlog (tagging, weekly digest) if
+  room allowed — a deliberate hardening/completion cycle, no new architecture, per
+  `planning/engineering-plan.md`.
+- **Shipped:** T1 (`JournalEntry.id` multi-match handling + `deduplicateEntries()` dedup pass),
+  T2 (`UIBackgroundModes: [remote-notification]`, plus discovering the `INFOPLIST_KEY_*`
+  synthesis-whitelist gap that required an `Info.plist` base file), T3 (`#if DEBUG`-gated
+  capability-gate override + manual Simulator verification of all 5 `CapabilityGateResult`
+  cases, evidence at `review/verification-assets/t3-capability-cases/`), T6/T7/T8 (personality
+  brief, retention policy, T13 auto-submit UX — all re-checked, all still genuinely unresolved by
+  Kv, correctly re-flagged rather than silently re-assumed), T9 (iOS 26+/A17 Pro-or-M-series
+  minimum re-verified against live Apple docs, no discrepancy), T11 (tag entry/edit UI + in-memory
+  tag search filter — first UI consumer of `JournalEntry.tags`), T12 (weekly digest/streak view,
+  `JournalDigest.compute(from:calendar:now:)`). Also fixed outside task scope, directly by the
+  orchestrating session: the App Group/iCloud container identifier drift
+  (`group.com.kv.apin` → `group.com.apin.app` in two Swift-source literals), a real
+  launch-blocking regression exposed by T2's mandatory `xcodegen generate` step — see
+  `memory/lessons-learned.md`.
+- **Not shipped:** T4 (dynamic zero-network-requests verification), T5 (Indonesian fluency
+  verification on real hardware), T10 (inline Siri/Spotlight latency spike) — all three remain
+  `pending`, deliberately deferred to cycle 3. Not a hardware-availability gap this time: Kv
+  confirmed a physical iPhone 17 and active Apple Developer account are available in principle,
+  and the device was even observed `connected` via `devicectl` partway through the cycle. The
+  actual blocker is a **tooling gap**: the orchestrating CLI session has no way to interactively
+  drive a physical device's UI (Instruments capture, typing real Indonesian questions, timing a
+  live response all need real interaction; available tooling is Simulator-only). Kv was asked and
+  explicitly chose to defer T4/T5/T10 to cycle 3 rather than hand-drive the device this session or
+  accept a CLI-only best-effort proxy — see `memory/decisions.md`'s 2026-08-11 entry.
+- **QA verdict:** Passed — 131 tests total (98 `ApinCoreTests` + 26 `ApinTests` + 7
+  `ApinWidgetTests`, up from 107 in cycle 1, +24 net new), all green; `swiftlint lint --strict` 0
+  violations across 84 files; 0 regressions found; clean rebuild from scratch (Debug and
+  Release); Release build independently confirmed via `nm`/`strings` to have T3's debug override
+  genuinely compiled out, and via `PlistBuddy` to have T2's `UIBackgroundModes` fix genuinely
+  present in the built `Info.plist`; fresh Simulator install + launch confirmed clean (including a
+  real end-to-end regression check that the App Group identifier fix actually resolved the
+  launch-time `fatalError`). Not yet externally release-ready — same honesty framing as cycle 1:
+  every check this cycle, including the App Group fix and T3's capability-gate verification, was
+  exercised only on Simulator, never on Kv's actual iPhone 17; live CloudKit cross-device sync and
+  live Spotlight/Siri discoverability remain unexercised on-device; T4/T5/T10 (the three tasks
+  that would exercise real hardware) remain pending. `/review` required one short rework loop
+  (T1/T3/T11 sent back for missed `memory/`-file acceptance criteria and, for T3, missing
+  verification evidence) before reaching a clean `/qa` pass — see `review/review-report.md`'s
+  addendum.
+- **Notable decisions:** New ADR-003 (in-memory, post-fetch tag filtering — SwiftData `#Predicate`
+  cannot filter `JournalEntry.tags`, a real, load-bearing constraint on how `JournalQuery` can
+  ever filter that field, not just an implementation detail). See `memory/decisions.md` for the
+  lighter-weight items: T4/T5/T10's tooling-gap blocker (new this cycle), T6/T7/T8 re-flagged
+  still-open, T9's re-verification with no discrepancy found. See `memory/technical-debt.md` for
+  three debt items resolved this cycle (T1's dedup guard, T2's background mode, T3's manual
+  verification) plus the App Group identifier drift (resolved, found+fixed outside task scope) and
+  the new open item (stray `Apin 2.xcodeproj`, flagged repeatedly, still unaddressed). See
+  `memory/lessons-learned.md` for the identifier-drift root-cause writeup.
+
 ### Sprint 1 — 2026-08-10 (cycle 1, first cycle)
 - **Goal:** Ship Apin v1 — an offline, on-device personality assistant (Apple Foundation
   Models) that answers questions with a consistent voice, auto-saves every Q&A pair to a

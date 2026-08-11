@@ -67,3 +67,27 @@ Different from coding-standards.md (rules) — this is "here's how we solved X b
   snapshot needed if there's no boundary to cross.
 - **First used in:** T12 (`JournalEntryExportSnapshot`), T14 (`JournalSearchIndexPayload`),
   Sprint 1.
+
+### In-memory post-fetch filter for array-typed (`[String]`) `@Model` properties `#Predicate` can't handle
+- **Use when:** you need to filter a SwiftData fetch on a `[String]` (or other
+  transformable/non-relationship-collection) property of a `@Model` type. Confirmed directly (not
+  assumed): `entry.someArrayProperty.contains(value)` inside a `#Predicate` **segfaults the
+  process at fetch time**, and `entry.someArrayProperty.contains(where: { ... })` **throws
+  `NSInvalidArgumentException: "Can't have a non-relationship collection element in a
+  subquery"`** — both a genuine SwiftData/Core Data limitation on this storage shape, not a bug
+  in how the predicate is written.
+- **Approach:** run the SwiftData `#Predicate` fetch for everything it *can* express (keyword,
+  date-range, any scalar-property condition), then apply the array-property condition as a
+  separate, plain in-memory `Array` filter over the fetched results afterward. Put the filter
+  logic in exactly one function (e.g. `JournalQuery.applyTagFilter(to:)`) and call that same
+  function at every call site that reads the data, rather than reimplementing the filter
+  per-call-site — this is what prevents the two-call-site consistency requirement from silently
+  drifting.
+- **Avoid when:** the property is a real SwiftData relationship (not a transformable/collection
+  attribute) — relationship-based `#Predicate` filtering works fine and doesn't need this
+  workaround. Also reconsider (don't default to this pattern forever) if fetch-then-filter scale
+  ever becomes a real performance concern for a given dataset size — at that point, changing the
+  property's storage shape (e.g. to a proper relationship) is the fix, not a cleverer predicate.
+- **First used in:** T11 (`JournalQuery.tagFilter`/`applyTagFilter(to:)` for `JournalEntry.tags`),
+  Sprint 2. See `memory/adrs/003-in-memory-post-fetch-tag-filtering.md` for the full architectural
+  writeup.

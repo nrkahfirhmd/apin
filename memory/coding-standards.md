@@ -95,3 +95,24 @@ holding up cleanly across all 18 tasks in Sprint 1 (0 SwiftLint violations at an
   settings) even though no single task's acceptance criteria names them — Sprint 1's
   `.gitignore` bare `*.md` defect (silently gitignoring all of `planning/`, `tasks/`, `memory/`,
   `review/`, and `README.md`/`CLAUDE.md`) was only caught this way.
+- **Identifier/literal renames must grep across generated-artifact-adjacent Swift sources, not
+  just `project.yml` (added Sprint 2, see `memory/lessons-learned.md`)**: any task that renames an
+  App Group ID, bundle ID, iCloud container ID, or any other value XcodeGen mirrors into
+  `.entitlements`/`Info.plist` must, in the same change, grep for the *old* literal across
+  `Apin/`, `ApinWidget/`, and `ApinCore/Sources/` (not just update `project.yml` and assume a
+  regenerate will happen soon) — a stale, already-checked-in generated artifact
+  (`.entitlements`, `Info.plist`) can mask source-vs-`project.yml` drift indefinitely, because it
+  "looks consistent" with the stale Swift literal even though both are wrong relative to
+  `project.yml`, the real source of truth. Cycle 2's App Group identifier drift
+  (`com.kv.apin` vs. `com.apin.app`) went unnoticed for an unknown number of cycles this exact
+  way, until a later task's mandatory `xcodegen generate` regenerated the entitlements and exposed
+  it as a launch-time `fatalError`.
+- **SwiftData `#Predicate` cannot filter `[String]` (or other transformable/non-relationship
+  collection) `@Model` properties (added Sprint 2, see `memory/adrs/003-in-memory-post-fetch-tag-
+  filtering.md` and `memory/implementation-patterns.md`)**: `entry.someArrayProperty.contains(_:)`
+  inside a `#Predicate` segfaults the process at fetch time, and `.contains(where:)` throws
+  `NSInvalidArgumentException`, both confirmed by direct reproduction against `JournalEntry.tags`.
+  Any future query-building work on an array-typed `@Model` property must apply that condition as
+  a separate, in-memory, post-fetch filter (one shared function, called at every read call site)
+  rather than attempting to fold it into the `#Predicate` — don't rediscover this by reproducing
+  the segfault again.

@@ -142,20 +142,46 @@ final class AskViewModel {
 @available(iOS 26.0, macOS 26.0, visionOS 26.0, *)
 extension AskViewModel {
     #if canImport(FoundationModels)
-    /// Production factory: T2's real capability gate plus a real
+    /// Production factory: T2's real capability gate (or T3's debug override, in
+    /// Debug builds only — see `resolvedCapabilityGate()`) plus a real
     /// `AskAndSaveService` wrapping a session pre-loaded with T5's personality
     /// instructions and T6's `journalRepository` (typically constructed from the
     /// same `ModelContainer` the app's `.modelContainer(...)` scene modifier
     /// uses — see `ApinApp`/`ContentView`).
     static func live(prefilledQuery: String = "", journalRepository: JournalRepository) -> AskViewModel {
         AskViewModel(
-            capabilityGate: CapabilityGate.live(),
+            capabilityGate: resolvedCapabilityGate(),
             askAndSaveService: AskAndSaveService(
                 assistantSession: AssistantSessionService(instructions: PersonalitySystemInstructionBuilder.build()),
                 journalRepository: journalRepository
             ),
             prefilledQuery: prefilledQuery
         )
+    }
+
+    /// T3 — resolves which `CapabilityGating` conformance `.live` should use.
+    ///
+    /// In Debug builds, checks `CapabilityGateDebugOverride` first, so `/qa` and
+    /// manual testers can force any of the 5 `CapabilityGateResult` cases via the
+    /// `APIN_DEBUG_CAPABILITY_OVERRIDE` launch environment variable, and falls
+    /// back to the real `CapabilityGate.live()` when that variable is unset.
+    ///
+    /// `CapabilityGateDebugOverride` itself only exists inside `#if DEBUG` (see
+    /// that file's header for why), so in a Release build this `#if DEBUG` block
+    /// is elided entirely at compile time — there is no override symbol left to
+    /// reference — and this function unconditionally returns
+    /// `CapabilityGate.live()`, exactly as it did before T3. This is what makes
+    /// the override "verifiably absent/inert in Release", not merely unused:
+    /// building with `-configuration Release` compiles fine with the debug type
+    /// gone, so there is no way for a Release build's capability check to be
+    /// influenced by this environment variable.
+    private static func resolvedCapabilityGate() -> CapabilityGating {
+        #if DEBUG
+        if let override = CapabilityGateDebugOverride.gate() {
+            return override
+        }
+        #endif
+        return CapabilityGate.live()
     }
     #endif
 }

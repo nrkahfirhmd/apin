@@ -77,26 +77,98 @@ public final class SwiftDataJournalRepository: JournalRepository {
         }
     }
 
+    /// Returns the "canonical" entry for `id`.
+    ///
+    /// `id` is only an application-level unique key, not a DB-enforced one — SwiftData's
+    /// CloudKit mirroring does not support unique constraints on `@Model` properties, so
+    /// `@Attribute(.unique)` was deliberately removed from `JournalEntry.id` in T18 (see
+    /// `memory/database-schema.md`). No current code path constructs a duplicate `id`, but a
+    /// future CloudKit merge/import edge case could. If the store ever contains more than one
+    /// entry sharing `id`, this deliberately returns the one with the most recent `createdAt`
+    /// (newest write "wins," mirroring the last-writer-wins semantics CloudKit's own
+    /// field-level conflict resolution already uses — see `ApinApp.swift`'s
+    /// `makeModelConfiguration()` doc comment) instead of an arbitrary, order-dependent
+    /// `.first`. Older duplicates are left in the store until `deduplicateEntries()` runs; this
+    /// method never deletes anything itself.
     public func fetch(by id: UUID) throws -> JournalEntry? {
         let descriptor = FetchDescriptor<JournalEntry>(
-            predicate: #Predicate { $0.id == id }
+            predicate: #Predicate { $0.id == id },
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
         return try modelContext.fetch(descriptor).first
     }
 
+    /// Fetches entries matching `query.predicate`/`query.sortBy`, then narrows further by
+    /// `query.tagFilter` (T11) in memory — see `JournalQuery.tagFilter`'s doc comment for why
+    /// the tag filter can't be folded into `predicate` itself (a real Core Data SQL-store
+    /// limitation on `JournalEntry.tags`' storage shape, confirmed directly, not an assumption).
     public func fetch(matching query: JournalQuery) throws -> [JournalEntry] {
         let descriptor = FetchDescriptor<JournalEntry>(
             predicate: query.predicate,
             sortBy: query.sortBy
         )
-        return try modelContext.fetch(descriptor)
+        let results = try modelContext.fetch(descriptor)
+        return query.applyTagFilter(to: results)
     }
 
+    /// Deletes every entry matching `id`.
+    ///
+    /// In the normal, non-duplicate case this deletes exactly the one entry `fetch(by:)` would
+    /// have returned. If duplicates exist for `id` (see `fetch(by:)`'s doc comment), a single
+    /// "delete this entry" request removes *all* of them, not just the most recent one —
+    /// leaving a hidden duplicate behind after a delete that looked fully successful would be
+    /// a worse outcome than removing extra rows that should never have existed. Still a no-op,
+    /// as before, when `id` doesn't match anything.
     public func delete(id: UUID) async throws {
-        guard let entry = try fetch(by: id) else { return }
-        modelContext.delete(entry)
+        let descriptor = FetchDescriptor<JournalEntry>(predicate: #Predicate { $0.id == id })
+        let matches = try modelContext.fetch(descriptor)
+        guard !matches.isEmpty else { return }
+
+        for entry in matches {
+            modelContext.delete(entry)
+        }
         try modelContext.save()
         await notifyDidDelete(id: id)
+    }
+
+    /// Defensive cleanup pass: removes duplicate `JournalEntry` rows that share an `id`,
+    /// keeping exactly one survivor per `id` (the same "most recent `createdAt` wins" rule as
+    /// `fetch(by:)`).
+    ///
+    /// `id` has been an application-level-only unique key since T18 (see `fetch(by:)`'s doc
+    /// comment and `memory/technical-debt.md`, "No DB-level uniqueness guarantee on
+    /// `JournalEntry.id` post-CloudKit"). This pass exists for duplicates that could only have
+    /// been created *before* T1's `fetch(by:)`/`delete(id:)` fix landed (e.g. a hypothetical
+    /// prior CloudKit merge/import edge case) — no code path in this repository produces a new
+    /// duplicate going forward. Safe to call repeatedly (a no-op once no duplicates remain) and
+    /// intended to run once per app launch; see `Apin/ApinApp.swift` for the wired call site.
+    ///
+    /// Deliberately bypasses `deleteSideEffects`: the surviving entry for each `id` keeps that
+    /// same `id`, so running the delete-side-effect path (which deindexes by `id`, see
+    /// `JournalEntryDeleteSideEffect`) would incorrectly remove the Spotlight index entry for
+    /// the entry that's staying, not just the duplicates being discarded.
+    @discardableResult
+    public func deduplicateEntries() throws -> Int {
+        let descriptor = FetchDescriptor<JournalEntry>(
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
+        )
+        let allEntries = try modelContext.fetch(descriptor)
+
+        var seenIDs = Set<UUID>()
+        var removedCount = 0
+        for entry in allEntries {
+            if seenIDs.contains(entry.id) {
+                modelContext.delete(entry)
+                removedCount += 1
+            } else {
+                seenIDs.insert(entry.id)
+            }
+        }
+
+        if removedCount > 0 {
+            try modelContext.save()
+        }
+        return removedCount
     }
 
     /// Runs every registered `deleteSideEffect` for `id`, in order. Side effects are

@@ -39,7 +39,7 @@ struct ApinApp: App {
     /// assertions, mirroring that test's pattern — `ApinTests` and `ApinWidgetTests` are
     /// separate targets with no shared dependency, so this can only be enforced as two
     /// independent regression pins on the same literal values, not a single shared constant.
-    static let appGroupIdentifier = "group.com.kv.apin"
+    static let appGroupIdentifier = "group.com.apin.app"
     static let storeFileName = "ApinJournal.sqlite"
 
     /// Shared across the SwiftUI environment (for `@Query`, e.g. T9's journal list) and
@@ -55,8 +55,29 @@ struct ApinApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(modelContainer: modelContainer)
+                .task {
+                    deduplicateJournalEntriesAtLaunch()
+                }
         }
         .modelContainer(modelContainer)
+    }
+
+    /// Startup dedup pass for `JournalEntry` rows sharing an `id` — see
+    /// `SwiftDataJournalRepository.deduplicateEntries()`'s doc comment and
+    /// `memory/technical-debt.md`, "No DB-level uniqueness guarantee on `JournalEntry.id`
+    /// post-CloudKit" (T1). Runs once per launch, after the root view appears (`.task` timing),
+    /// since this is a defensive cleanup for entries that could only have diverged before T1's
+    /// `fetch(by:)`/`delete(id:)` fix landed — not a path any normal launch is expected to
+    /// exercise. Failure is logged, not fatal: an un-deduplicated store is still fully usable.
+    private func deduplicateJournalEntriesAtLaunch() {
+        do {
+            let removedCount = try SwiftDataJournalRepository(modelContainer: modelContainer).deduplicateEntries()
+            if removedCount > 0 {
+                print("Apin: removed \(removedCount) duplicate JournalEntry row(s) sharing an id at launch.")
+            }
+        } catch {
+            print("Apin: journal entry dedup pass failed at launch: \(error)")
+        }
     }
 
     /// Builds the CloudKit-backed `ModelConfiguration` for the journal store, pointed at the
@@ -71,7 +92,7 @@ struct ApinApp: App {
     ///
     /// CloudKit note: `cloudKitDatabase: .automatic` mirrors this store to the signed-in
     /// user's private CloudKit database using the app's default container
-    /// (`iCloud.com.kv.apin`, see the `com.apple.developer.icloud-container-identifiers`
+    /// (`iCloud.com.apin.app`, see the `com.apple.developer.icloud-container-identifiers`
     /// entitlement in `project.yml`). Conflict resolution across devices is handled by
     /// SwiftData/Core Data's CloudKit mirroring delegate, which is last-writer-wins at the
     /// *field* level per synced record (not whole-object): if the same `JournalEntry` is

@@ -138,4 +138,130 @@ final class JournalRepositoryTests: XCTestCase {
 
         XCTAssertEqual(results.map(\.question), ["a", "b"])
     }
+
+    // MARK: - Duplicate `id` handling (T1)
+    //
+    // No current code path in this codebase constructs two `JournalEntry` instances sharing an
+    // `id` (every construction uses a fresh `UUID()`), so these tests build the scenario
+    // synthetically: two/three separate `JournalEntry` instances explicitly given the same
+    // `id`, saved individually into the same in-memory `ModelContainer`. The "no duplicates"
+    // case is already covered by `testFetchByIDReturnsMatchingEntry`/`testDeleteRemovesEntry`
+    // above — unchanged by this task, still passing.
+
+    func testFetchByIDWithDuplicatesReturnsMostRecentlyCreatedEntry() async throws {
+        let sharedID = UUID()
+        let older = JournalEntry(
+            id: sharedID, question: "older", answer: "older answer", createdAt: Date(timeIntervalSince1970: 0)
+        )
+        let newer = JournalEntry(
+            id: sharedID, question: "newer", answer: "newer answer", createdAt: Date(timeIntervalSince1970: 1000)
+        )
+        try await repository.save(older)
+        try await repository.save(newer)
+
+        let fetched = try await repository.fetch(by: sharedID)
+
+        XCTAssertEqual(fetched?.question, "newer")
+        XCTAssertEqual(fetched?.answer, "newer answer")
+        // fetch(by:) never deletes — both duplicates are still present in the store.
+        let all = try await repository.fetchAll()
+        XCTAssertEqual(all.filter { $0.id == sharedID }.count, 2)
+    }
+
+    func testDeleteWithDuplicatesRemovesAllMatchingEntries() async throws {
+        let sharedID = UUID()
+        try await repository.save(JournalEntry(id: sharedID, question: "older", answer: "1"))
+        try await repository.save(JournalEntry(id: sharedID, question: "newer", answer: "2"))
+
+        try await repository.delete(id: sharedID)
+
+        let fetched = try await repository.fetch(by: sharedID)
+        XCTAssertNil(fetched)
+        let all = try await repository.fetchAll()
+        XCTAssertTrue(all.filter { $0.id == sharedID }.isEmpty)
+    }
+
+    func testDeleteWithDuplicatesInvokesDeleteSideEffectsExactlyOnce() async throws {
+        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: JournalEntry.self, configurations: configuration)
+        let fake = FakeJournalSearchIndexing()
+        let repositoryWithSpy = SwiftDataJournalRepository(
+            modelContainer: container,
+            saveSideEffects: [],
+            deleteSideEffects: [JournalSearchIndexer(indexing: fake)]
+        )
+        let sharedID = UUID()
+        try await repositoryWithSpy.save(JournalEntry(id: sharedID, question: "a", answer: "1"))
+        try await repositoryWithSpy.save(JournalEntry(id: sharedID, question: "b", answer: "2"))
+
+        try await repositoryWithSpy.delete(id: sharedID)
+
+        // One logical delete request -> exactly one delete-side-effect notification for the id,
+        // even though two rows were physically removed.
+        XCTAssertEqual(fake.deletedIDs, [sharedID])
+    }
+
+    // MARK: - Dedup pass (T1)
+
+    func testDeduplicateEntriesIsANoOpWhenNoDuplicatesExist() async throws {
+        try await repository.save(JournalEntry(question: "solo", answer: "answer"))
+
+        let removedCount = try repository.deduplicateEntries()
+
+        XCTAssertEqual(removedCount, 0)
+        let all = try await repository.fetchAll()
+        XCTAssertEqual(all.count, 1)
+    }
+
+    func testDeduplicateEntriesKeepsMostRecentAndRemovesExtras() async throws {
+        let sharedID = UUID()
+        let oldest = JournalEntry(
+            id: sharedID, question: "oldest", answer: "1", createdAt: Date(timeIntervalSince1970: 0)
+        )
+        let middle = JournalEntry(
+            id: sharedID, question: "middle", answer: "2", createdAt: Date(timeIntervalSince1970: 500)
+        )
+        let newest = JournalEntry(
+            id: sharedID, question: "newest", answer: "3", createdAt: Date(timeIntervalSince1970: 1000)
+        )
+        try await repository.save(oldest)
+        try await repository.save(middle)
+        try await repository.save(newest)
+        let untouched = JournalEntry(question: "solo", answer: "solo answer")
+        try await repository.save(untouched)
+
+        let removedCount = try repository.deduplicateEntries()
+
+        XCTAssertEqual(removedCount, 2)
+        let all = try await repository.fetchAll()
+        let survivors = all.filter { $0.id == sharedID }
+        XCTAssertEqual(survivors.count, 1)
+        XCTAssertEqual(survivors.first?.question, "newest")
+        XCTAssertEqual(all.filter { $0.id == untouched.id }.count, 1)
+    }
+
+    func testDeduplicateEntriesDoesNotInvokeDeleteSideEffects() async throws {
+        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: JournalEntry.self, configurations: configuration)
+        let fake = FakeJournalSearchIndexing()
+        let repositoryWithSpy = SwiftDataJournalRepository(
+            modelContainer: container,
+            saveSideEffects: [],
+            deleteSideEffects: [JournalSearchIndexer(indexing: fake)]
+        )
+        let sharedID = UUID()
+        try await repositoryWithSpy.save(
+            JournalEntry(id: sharedID, question: "a", answer: "1", createdAt: Date(timeIntervalSince1970: 0))
+        )
+        try await repositoryWithSpy.save(
+            JournalEntry(id: sharedID, question: "b", answer: "2", createdAt: Date(timeIntervalSince1970: 1000))
+        )
+
+        let removedCount = try repositoryWithSpy.deduplicateEntries()
+
+        XCTAssertEqual(removedCount, 1)
+        // The survivor keeps the same `id`, so its Spotlight index entry must stay valid —
+        // the dedup pass must not run deleteSideEffects for extras it discards.
+        XCTAssertTrue(fake.deletedIDs.isEmpty)
+    }
 }

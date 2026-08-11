@@ -16,8 +16,9 @@
 		29A9A574A030298CB879CA19 /* AskAndSaveServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */; };
 		30C62E71DEBC631BFA916B13 /* FakeJournalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEBFEC94762CA4CF7EE2417 /* FakeJournalRepository.swift */; };
 		3830FF3F14B7D490A5A89358 /* ApinWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */; };
-		4615AA952763438B97C26E23 /* ApinWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4615AA952763438B97C26E23 /* ApinWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4652B99380405A789ECFD42E /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F14A290F7DCDF75BD74141 /* AskView.swift */; };
+		48C649A6F1BEC165E2B56C8B /* JournalTagFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D414C98D4502E9BE3D9F00 /* JournalTagFilterView.swift */; };
 		57AB36E97B6C88289C395056 /* AskViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0938D36112AD147B50397E9D /* AskViewModelTests.swift */; };
 		5A32849B8A3092FFA2CF4156 /* AskScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B0C68C2A3B967A5EC2862D /* AskScaffold.swift */; };
 		5EEF7EAD38421AF9FA9B8980 /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = 460256CE5DC28F7B00A6ACA5 /* ApinCore */; };
@@ -47,6 +48,7 @@
 		E37320E7B87AF2ADB7BA1534 /* AssistantSessionProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B4DD16EA1CA803DFDD6BCE /* AssistantSessionProviding.swift */; };
 		E82FEC315B2D031DB8D9DF4B /* JournalScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */; };
 		E965B08A44B7531104C71BF1 /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1352D37CBBD1499CBAEAE9C7 /* ApinCore */; };
+		F19AC4B72DA0D993D73A4189 /* WeeklyDigestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF512B5A08837C45D272B98 /* WeeklyDigestView.swift */; };
 		F3CFE0E37D65F5EA04A3EB63 /* AskAndSaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA51B5143725767AEEE81FFF /* AskAndSaveService.swift */; };
 		F57FDD52F6ED53EF4B1BE4C4 /* CapabilityStatusCopyProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6609284A14AA875C7A51BB57 /* CapabilityStatusCopyProviderTests.swift */; };
 		FB08068D1F030F78CF339086 /* FakeCapabilityGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */; };
@@ -77,7 +79,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				4615AA952763438B97C26E23 /* ApinWidget.appex in Embed Foundation Extensions */,
+				4615AA952763438B97C26E23 /* ApinWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,20 +107,23 @@
 		6C1E3F21C047DE406304F73D /* Apin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Apin.entitlements; sourceTree = "<group>"; };
 		70B8C02BD22060A2F13FE633 /* AskApinShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskApinShortcutsProvider.swift; sourceTree = "<group>"; };
 		7F9F5BE63677E434036F5A0E /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
-		82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ApinWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ApinWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveServiceTests.swift; sourceTree = "<group>"; };
 		8B28B5DC4DA1C02623C3535F /* ApinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinApp.swift; sourceTree = "<group>"; };
-		96322F77844ED3D7821A943F /* Apin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Apin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		986928276723CE5C1489332F /* ApinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96322F77844ED3D7821A943F /* Apin.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Apin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		986928276723CE5C1489332F /* ApinTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ApinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalScaffold.swift; sourceTree = "<group>"; };
-		9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApinWidgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ApinWidgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A25A44ABF199FFC7B8988C07 /* ApinWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidget.swift; sourceTree = "<group>"; };
 		A98ECDA61B464AC3D68113A8 /* ApinWidgetEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetEntryTests.swift; sourceTree = "<group>"; };
 		AA9CC9F6186F109B85D840CD /* ApinWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetProvider.swift; sourceTree = "<group>"; };
+		ADF512B5A08837C45D272B98 /* WeeklyDigestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyDigestView.swift; sourceTree = "<group>"; };
 		B00E35DCF06C3FE25182B45D /* JournalWidgetStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalWidgetStoreTests.swift; sourceTree = "<group>"; };
+		B7D414C98D4502E9BE3D9F00 /* JournalTagFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTagFilterView.swift; sourceTree = "<group>"; };
 		B7F14A290F7DCDF75BD74141 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
 		BD9A29E202FCE56556278EF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C51B6CD3025F19C8EEF99D6A /* ApinCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ApinCore; sourceTree = SOURCE_ROOT; };
+		C51B6CD3025F19C8EEF99D6A /* ApinCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ApinCore; path = ApinCore; sourceTree = SOURCE_ROOT; };
+		D120773962363B4FDBDC9144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCapabilityGate.swift; sourceTree = "<group>"; };
 		DDBE1D77A19D707D404ADA9F /* WidgetsScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsScaffold.swift; sourceTree = "<group>"; };
 		E4FC5D3E649C14DBF0F3764F /* JournalEntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryRow.swift; sourceTree = "<group>"; };
@@ -168,6 +173,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05EFFB7A22B845935418D22D /* Digest */ = {
+			isa = PBXGroup;
+			children = (
+				ADF512B5A08837C45D272B98 /* WeeklyDigestView.swift */,
+			);
+			path = Digest;
+			sourceTree = "<group>";
+		};
 		2D4BDB1E78C2BBD3DD4AAF10 /* ApinWidgetTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,7 +218,7 @@
 			children = (
 				96322F77844ED3D7821A943F /* Apin.app */,
 				986928276723CE5C1489332F /* ApinTests.xctest */,
-				82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */,
+				82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */,
 				9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */,
 			);
 			name = Products;
@@ -215,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				6608D59A253353C59FD806E0 /* Ask */,
+				05EFFB7A22B845935418D22D /* Digest */,
 				929E608EDE14ECEBB59F3B2C /* Journal */,
 				33D5460FBE502038AFDAEEE5 /* Widgets */,
 			);
@@ -262,6 +276,7 @@
 				E4FC5D3E649C14DBF0F3764F /* JournalEntryRow.swift */,
 				7F9F5BE63677E434036F5A0E /* JournalListView.swift */,
 				99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */,
+				B7D414C98D4502E9BE3D9F00 /* JournalTagFilterView.swift */,
 			);
 			path = Journal;
 			sourceTree = "<group>";
@@ -308,6 +323,7 @@
 				8B28B5DC4DA1C02623C3535F /* ApinApp.swift */,
 				BD9A29E202FCE56556278EF1 /* Assets.xcassets */,
 				F7198F4928EDA8F564909CD3 /* ContentView.swift */,
+				D120773962363B4FDBDC9144 /* Info.plist */,
 				661AF53298D83D259168280F /* AppIntents */,
 				AA334B9F92706142B49D2885 /* Common */,
 				5E3DECC9F370541BC019A9FC /* Features */,
@@ -376,7 +392,7 @@
 				460256CE5DC28F7B00A6ACA5 /* ApinCore */,
 			);
 			productName = ApinWidgetExtension;
-			productReference = 82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */;
+			productReference = 82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		C5B29B27D0828B3973930731 /* ApinWidgetTests */ = {
@@ -405,7 +421,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2660;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					4C79F6010460A2C47597D3AA = {
 						ProvisioningStyle = Automatic;
@@ -474,7 +490,9 @@
 				BA15CFD2E90160DEEA23FF39 /* JournalEntryRow.swift in Sources */,
 				9ACCBBD0763D9CBAADDEA3EE /* JournalListView.swift in Sources */,
 				E82FEC315B2D031DB8D9DF4B /* JournalScaffold.swift in Sources */,
+				48C649A6F1BEC165E2B56C8B /* JournalTagFilterView.swift in Sources */,
 				27C777858463DE07131EE94A /* StatusMessageView.swift in Sources */,
+				F19AC4B72DA0D993D73A4189 /* WeeklyDigestView.swift in Sources */,
 				A8BD29133550F45B1231D163 /* WidgetsScaffold.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,10 +587,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -586,7 +602,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -610,7 +625,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget;
 				PRODUCT_NAME = ApinWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -630,7 +645,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.tests;
 				PRODUCT_NAME = ApinTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -674,10 +689,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -698,7 +711,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -722,7 +734,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget;
 				PRODUCT_NAME = ApinWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -742,7 +754,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget.tests;
 				PRODUCT_NAME = ApinWidgetTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -761,7 +773,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.tests;
 				PRODUCT_NAME = ApinTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -781,8 +793,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apin/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Apin;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = (
+					"remote-notification",
+				);
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -790,7 +806,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app;
 				PRODUCT_NAME = Apin;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -809,7 +825,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget.tests;
 				PRODUCT_NAME = ApinWidgetTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -828,8 +844,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apin/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Apin;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = (
+					"remote-notification",
+				);
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -837,7 +857,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app;
 				PRODUCT_NAME = Apin;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;

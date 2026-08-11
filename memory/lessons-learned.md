@@ -17,6 +17,51 @@ subagent after `/review` and `/qa` each cycle. Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### 2026-08-11 — Sprint 2
+- **What happened:** `Apin/ApinApp.swift` and `ApinWidget/JournalWidgetStore.swift` hardcoded
+  `appGroupIdentifier = "group.com.kv.apin"` (plus a stray `iCloud.com.kv.apin` doc comment),
+  drifted from `project.yml`'s real, already-updated entitlement value
+  (`group.com.apin.app`/`iCloud.com.apin.app`). This drift was invisible for an unknown number of
+  cycles because the checked-in, stale `Apin.entitlements`/`ApinWidget.entitlements` files still
+  had the old `com.kv.apin` values too — self-consistent with the Swift literals, just
+  inconsistent with `project.yml`. It only surfaced when T2's mandatory `xcodegen generate` step
+  regenerated the entitlements from `project.yml` (the true source of truth), at which point the
+  regenerated entitlement (`group.com.apin.app`) no longer matched the Swift-source literal
+  (`group.com.kv.apin`), and the app started `fatalError`-ing at launch
+  (`"App Group container 'group.com.kv.apin' is not reachable..."`) — a launch-blocking
+  regression discovered and fixed directly by the orchestrating session, not by any task-scoped
+  fix, and independently re-verified end-to-end by both `/review` and `/qa`.
+- **Root cause:** An identifier rename (`com.kv.apin` → `com.apin.app`) was applied to
+  `project.yml` in an earlier cycle but missed two hardcoded Swift-source literals (
+  `ApinApp.swift`'s `appGroupIdentifier` + doc comment, `JournalWidgetStore.swift`'s
+  `appGroupIdentifier`) and their pinned regression tests. The already-generated, stale
+  `.entitlements` files (checked into git, not regenerated since the rename) happened to still
+  match the wrong Swift literals, so nothing looked broken until the next `xcodegen generate`
+  regenerated them from the real source of truth — a generated artifact silently masked a source
+  drift for an indefinite number of cycles.
+- **Fix applied:** Both Swift literals and the stray doc-comment reference updated to
+  `group.com.apin.app`/`iCloud.com.apin.app`; the two pinned regression tests
+  (`ApinAppModelConfigurationTests`, `JournalWidgetStoreTests.test_appGroupIdentifier_...`)
+  updated to assert the corrected literal; reconfirmed via a full `xcodebuild test` run (no
+  `fatalError` at launch) and logged in `memory/technical-debt.md`'s "App Group / iCloud container
+  identifier drift" entry (resolved).
+- **Prevent next time:** Any identifier/literal rename (App Group IDs, bundle IDs, iCloud
+  container IDs, or any other value mirrored into `.entitlements`/`Info.plist` by XcodeGen) must
+  grep across generated-artifact-adjacent Swift sources for the *old* literal in the same change
+  that updates `project.yml` — not just update `project.yml` and trust that a stale, already-
+  generated artifact will be regenerated soon. A stale generated artifact (entitlements, Info.plist)
+  can mask source drift indefinitely because it "looks consistent" with the stale Swift literal
+  even though both are wrong relative to the real source of truth. Promoted to a standing check in
+  `memory/coding-standards.md`.
+- **Related, not promoted to a standing rule:** the stray, git-tracked duplicate
+  `Apin 2.xcodeproj` at repo root has now been independently flagged four times across two cycles
+  (T3, T11, both Cycle-2 `/review` passes) without ever being cleaned up — a process gap, not a
+  code defect: nobody owns repo-root cleanup unless a task explicitly claims it, so a known-dead,
+  confirmed-harmless artifact just keeps getting re-discovered instead of removed. Logged as open
+  debt (`memory/technical-debt.md`) with an explicit recommendation to schedule a trivial,
+  dedicated cleanup task with Kv's go-ahead, rather than relying on it being caught "for free" by
+  a future review pass again.
+
 ### 2026-08-10 — Sprint 1
 - **What happened:** Running 3+ `task-runner` agents fully in parallel in one wave, in a repo
   that lives under iCloud Drive (`~/Documents/...`), produced real iCloud "conflicted copy"

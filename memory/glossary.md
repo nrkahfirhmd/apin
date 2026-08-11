@@ -36,3 +36,22 @@ device/OS/Apple-Intelligence-toggle state supports on-device `FoundationModels` 
 (`CapabilityGating` protocol, `CapabilityGateResult` — `available` / `unsupportedDevice` /
 `unsupportedOS` / `appleIntelligenceDisabled` / `modelNotReady`). (Context: every entry point —
 Ask screen, widget, App Intent — branches on this instead of re-deriving availability itself.)
+
+**capability-gate debug override** — a `#if DEBUG`-only mechanism
+(`CapabilityGateDebugOverride`/`ForcedCapabilityGate`) that forces any `CapabilityGateResult`
+case at launch via the `APIN_DEBUG_CAPABILITY_OVERRIDE` environment variable, used to manually
+render and verify the unsupported-device/OS negative path in Simulator without needing
+genuinely-ineligible physical hardware. Compiled out of Release builds entirely — never reachable
+in a shipped app. (Context: introduced T3, Cycle 2; see `memory/apis.md`.)
+
+**digest / streak** — the weekly-digest view's two computed metrics: the count of questions asked
+and the current consecutive-day streak, both derived purely from `JournalEntry.createdAt`
+(`JournalDigest.compute(from:calendar:now:)`). "Streak" breaks on any calendar day with zero
+journal entries. (Context: introduced T12, Cycle 2; see `memory/apis.md`.)
+
+**tag filter (in-memory)** — journal search's tag-matching condition
+(`JournalQuery.tagFilter`/`applyTagFilter(to:)`), AND-combined with keyword/date-range filtering
+but applied as a separate, in-memory, post-fetch `Array` filter rather than folded into the
+SwiftData `#Predicate` used for the rest of the query — a confirmed SwiftData limitation on
+`[String]` `@Model` properties, not a style choice. (Context: introduced T11, Cycle 2; see
+`memory/adrs/003-in-memory-post-fetch-tag-filtering.md`.)

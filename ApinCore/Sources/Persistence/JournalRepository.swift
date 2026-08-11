@@ -3,8 +3,8 @@
 //
 // Persistence-layer entry point for `JournalEntry`. This protocol is the convergence point
 // several later tasks hook into (T8 auto-save, T9/T10/T11 journal screens, T12 export writer,
-// T14 Spotlight indexing, T18 CloudKit sync, T16/T17 widget) — keep this shape stable. See
-// tasks/task-graph.md T6.
+// T14 Spotlight indexing, T18 CloudKit sync, T16/T17 widget, T11 tagging) — keep this shape
+// stable. See tasks/task-graph.md T6.
 //
 // This file must never import SwiftUI/UIKit.
 
@@ -34,7 +34,7 @@ public protocol JournalRepository {
     /// A single entry by its stable identifier, if it still exists.
     func fetch(by id: UUID) async throws -> JournalEntry?
 
-    /// Entries matching an arbitrary predicate/sort order. Later tasks (T10 search, T20 tag
+    /// Entries matching an arbitrary predicate/sort order. Later tasks (T10 search, T11 tag
     /// filtering) build `JournalQuery` values against this rather than adding new methods.
     func fetch(matching query: JournalQuery) async throws -> [JournalEntry]
 
