@@ -93,7 +93,13 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
 - **Opened:** Sprint 1 (gap present since T4/T7); explicitly logged as debt starting this
   `/remember` pass per reviewer's and QA's recommendation (previously undocumented anywhere
   durable).
-- **Status:** open.
+- **Status:** open. **Cycle 3 update:** T2 produced a precise, self-contained manual verification
+  script (`review/manual-verification/zero-network-check.md`) for Kv to execute on the physical
+  iPhone 17 — exact Instruments/Network Link Conditioner steps, exact pass/fail criteria, blank
+  Result section. This does not resolve the debt itself (Kv has not yet executed it or reported a
+  result), but the effort-to-fix is now "run an existing script," not "write one." See
+  `memory/decisions.md`'s 2026-08-11 "T4/T5/T10-equivalent device verification" entry; closing this
+  entry is T5's job once Kv reports back.
 
 ### Unsupported-device/OS path only structurally verified, never manually exercised
 - **Where:** `Apin/Features/Ask/CapabilityUnavailableView.swift` /
@@ -197,6 +203,19 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
   were updated to assert the corrected literal. Reconfirmed via `xcodebuild test` on the `Apin`
   scheme (`-only-testing:ApinTests -only-testing:ApinWidgetTests`): 26 `ApinTests` + 7
   `ApinWidgetTests`, all passing, no `fatalError` at launch.
+  - **Cycle 3 addendum (regression-and-refix, still resolved, not reopened):** at the start of
+    Cycle 3, an uncommitted working-tree diff sitting in the repo — committed without being read
+    first (see `memory/lessons-learned.md`'s 2026-08-11 Sprint 3 entry) — reintroduced this exact
+    bug across the same 7 files (commit `042452c`, which despite its "fix: correct... drift"
+    message actually ran backwards and put `group.com.kv.apin` back). It was caught by `/qa`'s
+    independent `xcodebuild test` re-run (the exact same `fatalError` symptom documented above),
+    then fixed again by reverting `042452c` (commit `b7c1536`) and re-verified from scratch by a
+    second, independent `/qa` pass: all 4 affected files read directly, `project.yml` confirmed
+    never wrong, entitlements/`.pbxproj` regenerated via `xcodegen generate`, 131/131 tests passing.
+    The underlying code is correct as of Cycle 3's end (same as the original resolution above) —
+    this addendum exists so a future reader knows the risk class (silent drift between
+    `project.yml` and Swift-source literals for this identifier) has now manifested twice, not to
+    reopen this entry's status.
 
 ### Stray git-tracked duplicate `Apin 2.xcodeproj` at repo root
 - **Where:** repo root, `Apin 2.xcodeproj/` (5 tracked files: its own `project.pbxproj`,
@@ -223,6 +242,14 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
 - **Opened:** predates Sprint 1 (present since the base commit `5038611`); first flagged as
   cleanup-worthy during Cycle 2 by T3's and T11's task-runners, then independently reconfirmed by
   both the original and follow-up `/review` passes and by `/qa`.
-- **Status:** open. No task has claimed removing it. Recommend scheduling a trivial, dedicated
-  cleanup task in a future cycle (e.g. cycle 3) with Kv's explicit go-ahead, so this stops being
-  silently re-discovered every cycle without ever being resolved.
+- **Status:** resolved (Cycle 3, standalone commit `1b8147f chore: remove stray duplicate Apin
+  2.xcodeproj`, confirmed with Kv and committed on its own before this cycle's `/plan` ran, per this
+  entry's own recommendation that it not be silently absorbed into another task). Note: Cycle 3's
+  `/review` pass independently re-discovered a *new* `Apin 2.xcodeproj` (mtime same-cycle,
+  gitignored, no `project.pbxproj` inside it — harmless scaffolding, not a repeat of the tracked
+  duplicate this entry describes) — see that pass's "Coding standards check" section. Xcode
+  regenerates this shadow scaffolding whenever it's opened against the iCloud-synced project;
+  removing the git-tracked instance (this entry) does not prevent Xcode from recreating an
+  untracked, gitignored one. Not reopening this entry for that — it's a different, already-ignored
+  artifact — but Kv should be aware the underlying iCloud+Xcode cause can keep regenerating a
+  same-named, harmless directory even though the real fix here (removing the tracked one) is done.

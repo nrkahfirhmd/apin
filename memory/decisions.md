@@ -16,6 +16,66 @@ Owner: who/what decided (e.g. "planner agent", "Kv")
 
 <!-- Entries below this line, newest first -->
 
+### 2026-08-11 — Personality brief resolved: "Apin" is an Apple Intelligence pun, tone playful/cheerful, voice modeled on Crow Armbrust (*Trails of Cold Steel*)
+Context: spec open question #2, re-flagged as still-unresolved every cycle since it first shipped
+as a placeholder (see the 2026-08-11 "Personality brief for 'Apin' still unresolved as of Cycle
+2" entry and the 2026-08-10 placeholder entry, both below). Kv supplied a real brief in this
+cycle's planning session chat.
+Decision: name is framed as a pun on "Apple Intelligence"; tone is playful/cheerful; character
+reference is Crow Armbrust — witty, charming, mercenary-rogue energy, quips rather than lectures,
+cocky but likable, still always answers the actual question directly, dials back the swagger for
+serious/sensitive/safety-relevant topics. Implemented as a content-only change in T1
+(`ApinCore/Sources/AI/PersonalityBrief.swift`, Cycle 3) — behavior-anchored guidance only, no
+backstory/setting/character-name lore encoded, per the plan's Risk mitigation against
+overshooting into roleplay. `PersonalitySystemInstructionBuilderTests.swift` passes unmodified in
+shape; verified independently by both `/review` and `/qa`. Closes spec open question #2 — Apin's
+name origin and character reference are no longer open.
+Owner: Kv (brief content) / task-runner T1 (Cycle 3, implementation)
+
+### 2026-08-11 — Retention/archiving policy resolved: keep current behavior (keep-forever, manual single-delete)
+Context: spec open question #4, re-flagged as still-open every cycle since it first shipped as an
+assumption in Cycle 1's T6 (see the 2026-08-10 "implemented as assumed" entry and the 2026-08-11
+Cycle-2 re-check entry, both below). Kv confirmed in this cycle's planning session chat.
+Decision: keep the already-shipped behavior as final — journal entries are kept forever by
+default, manual single-entry delete remains the only deletion path in scope; no soft-delete,
+archive, or auto-expiry. No code change needed (`SwiftDataJournalRepository.swift` already
+matches this exactly, re-confirmed during this cycle's plan). Closes spec open question #4.
+Owner: Kv
+
+### 2026-08-11 — T13 Spotlight/Siri deep-link auto-submit UX resolved: keep current behavior
+Context: spec open question #3 (partial — the T13 auto-submit sub-question), re-flagged as
+still-open every cycle since T13 shipped in Cycle 1 (see the 2026-08-10 entry and the 2026-08-11
+Cycle-2 re-check entry, both below). Kv confirmed in this cycle's planning session chat.
+Decision: keep auto-submit-on-deep-link as final, shipped behavior — a Spotlight/Siri query
+continues to fire `AskViewModel.submit()` immediately once `AskView` picks up the prefilled
+query, with no confirming tap required first. No code change. This closes the T13 sub-question
+specifically; the broader spec open question #3 (Spotlight/Siri latency budget) is separate and
+remains addressed only by T4's manual verification script this cycle (see the entry below),
+carried forward via T5.
+Owner: Kv
+
+### 2026-08-11 — T4/T5/T10-equivalent device verification: manual scripts produced and handed off, Kv driving the device personally (updates the entry below)
+Context: follow-up to the 2026-08-11 "T4/T5/T10 blocked on execution-environment tooling" entry
+below, where Kv had chosen option (c) — defer to cycle 3. This cycle's `/plan` scoped the
+carried-forward items (renumbered T2/T3/T4 in `tasks/task-graph.md`) as producing precise,
+self-contained manual verification scripts rather than having the session attempt a CLI-only
+proxy, and Kv explicitly confirmed choosing to drive the physical device personally this cycle
+rather than have the session attempt that proxy.
+Decision: task-runners produced `review/manual-verification/zero-network-check.md`,
+`review/manual-verification/indonesian-fluency-check.md`, and
+`review/manual-verification/siri-spotlight-latency-spike.md` — each self-contained, with concrete
+pass/fail criteria and a genuinely blank "Result" section — and handed them to Kv. As of this
+cycle's end, Kv has not yet executed any of the three scripts or reported results, so T5 (record
+Kv's results) stays `blocked`, and the three underlying open items (zero-network dynamic
+verification, Indonesian fluency, Siri/Spotlight latency budget) remain open — the difference
+from prior cycles is that executable scripts now exist and are handed off, not that the
+verification itself has happened. This is the third consecutive cycle this class of item hasn't
+closed (cycle 1: no hardware; cycle 2: no device-driving tooling; cycle 3: scripts exist,
+execution now depends only on Kv's own time). `planning/engineering-plan.md`'s Open Questions #3
+flags: if this recurs into cycle 4, consider pulling these out of the sprint-planning loop into a
+standing, cycle-independent checklist.
+Owner: task-runner (T2/T3/T4, Cycle 3) / Kv (execution and report, still pending)
+
 ### 2026-08-11 — T4/T5/T10 blocked on execution-environment tooling, not hardware availability; Kv chose to defer to cycle 3
 Context: Cycle 2's plan and task graph anticipated T4 (dynamic zero-network verification), T5
 (Indonesian fluency check on real hardware), and T10 (inline Siri/Spotlight latency spike) being

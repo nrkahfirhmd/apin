@@ -21,9 +21,12 @@ real journal data written by the app despite running in a separate process. See
 only fully functional once T18 wired the app-side half.)
 
 **Apin** — the assistant's name and personality; the whole product is named after it. Kv's
-on-device, offline study-buddy companion. The personality brief (tone/voice) is currently a
-placeholder pending Kv's real intent — see `memory/decisions.md`. (Context: name is not
-confirmed to be short for anything; open question from `planning/spec.md`.)
+on-device, offline study-buddy companion. The name is a pun on "Apple Intelligence"; the
+personality brief's tone is playful/cheerful, voice modeled on Crow Armbrust (*Trails of Cold
+Steel*: witty, charming, mercenary-rogue energy, quips over lectures, cocky but likable, still
+always answers directly) — resolved Cycle 3, see `memory/decisions.md`'s 2026-08-11 "Personality
+brief resolved" entry and `ApinCore/Sources/AI/PersonalityBrief.swift`. Spec open question #2 is
+now closed.
 
 **ask-and-save flow** — the shared "capture question → run the on-device model → save the Q&A
 pair to the journal" orchestration (`AskAndSaveServicing`/`AskAndSaveService`, T8), reused by

@@ -17,6 +17,64 @@ subagent after `/review` and `/qa` each cycle. Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### 2026-08-11 — Sprint 3
+- **What happened:** At the start of this cycle, the orchestrating session found
+  `Apin.xcodeproj/project.pbxproj`, `Apin/Apin.entitlements`, `Apin/ApinApp.swift`,
+  `ApinTests/ApinAppModelConfigurationTests.swift`, `ApinWidget/ApinWidget.entitlements`,
+  `ApinWidget/JournalWidgetStore.swift`, and `ApinWidgetTests/JournalWidgetStoreTests.swift`
+  showing as modified in `git status`. It assumed — based on `memory/technical-debt.md`'s "App
+  Group / iCloud container identifier drift" entry narrating this exact file set as "resolved
+  (Cycle 2, ...)" — that this uncommitted working-tree diff represented cycle 2's already-verified
+  fix, and committed it directly (`042452c`, message: "fix: correct App Group/iCloud container
+  identifier drift (com.kv.apin -> com.apin.app)") without reading the actual diff content first.
+  The diff ran exactly backwards: `project.yml` had always been correct
+  (`group.com.apin.app`/`iCloud.com.apin.app`), and the previously-committed `0daefc7` already had
+  the correct values in both Swift-source literals. The uncommitted diff actually *reverted*
+  `ApinApp.swift`/`JournalWidgetStore.swift` and their two pinned regression tests back to the old,
+  broken `group.com.kv.apin`, and also reverted `project.pbxproj`/entitlements to an
+  older-generated shape (missing `DEVELOPMENT_TEAM`, wrong widget product naming
+  `ApinWidgetExtension.appex` vs. `ApinWidget.appex`, array-vs-string `UIBackgroundModes` plist
+  formatting). This went undetected through `/plan`, `/tasks`, `/implement` (T1–T4), and the first
+  `/review` pass (which correctly scoped itself to only T1–T4's diffs and had no reason to audit an
+  already-committed, unrelated commit). It was caught by the first `/qa` pass, which ran the full
+  `xcodebuild test -only-testing:ApinTests -only-testing:ApinWidgetTests` suite independently and
+  hit the exact `fatalError: "App Group container 'group.com.kv.apin' is not reachable..."` crash
+  that `memory/technical-debt.md` had documented as this bug class's symptom before (0/26
+  `ApinTests`, launch crash). The orchestrating session then fixed it directly (not via a
+  task-runner, since it wasn't task-graph scope) by editing the 4 Swift-source spots back to
+  `group.com.apin.app`/`iCloud.com.apin.app`, regenerating `project.pbxproj`/entitlements via
+  `xcodegen generate` (never hand-editing them), and committing the fix as `b7c1536`. A second,
+  independent `/qa` pass then re-verified everything from scratch (re-read all 4 files directly,
+  re-ran the exact test invocation that had crashed, re-ran install+launch+alive-check on the same
+  simulator UDID) and confirmed 131/131 tests passing.
+- **Root cause:** A stale, uncommitted working-tree snapshot (plausibly an iCloud Drive sync
+  artifact, per `b7c1536`'s own commit message's plausible-cause note) sat in the repo across a
+  session boundary. It was committed on the strength of what a memory file's narrative said the
+  diff *should* contain ("this matches cycle 2's already-resolved App Group fix"), not on what the
+  diff actually contained. No test run gated the commit before it landed.
+- **Fix applied:** `b7c1536` — a byte-for-byte inverse of `042452c` across the same 7 files,
+  independently re-verified (not trusted from either commit's message) by direct source reads, a
+  full `xcodebuild test` re-run of the exact invocation that had crashed, and a fresh
+  `simctl install`/`launch` on the same device. 131/131 tests confirmed passing.
+- **Prevent next time:** Before staging or committing any pre-existing uncommitted diff that
+  wasn't personally authored this session, `git diff` (or equivalent) and read the actual content
+  of every hunk — don't infer what it contains from what a `memory/` file's narrative says was
+  already fixed, and don't trust a commit message's own stated direction (X → Y) without
+  confirming the diff runs that direction. This applies with extra weight to security/identity-
+  sensitive literals (App Group IDs, bundle IDs, iCloud container IDs) and to any file class with a
+  history of drift — this exact file set has now drifted twice (the original Sprint-1-adjacent
+  drift documented in the 2026-08-11 Sprint 2 entry below, and now this). Promoted to a standing
+  rule in `memory/coding-standards.md`.
+- **How this differs from the Sprint 2 entry below:** that entry is about a *rename* (`com.kv.apin`
+  → `com.apin.app`) missing two Swift-source literals during an edit. This incident is about
+  committing a *pre-existing, unread* working-tree diff that happened to run the rename backwards —
+  a distinct trigger (commit hygiene on inherited state, not an edit that missed a call site), even
+  though both incidents involve the same literal and the same file set. Also distinct from the
+  Sprint 1 iCloud-Drive-parallelism entry further below: that one is about *parallel* `task-runner`
+  agents producing sync-layer "conflicted copy" duplicates; this incident involved one agent acting
+  alone, at a normal pace, committing a stale/inverted snapshot without reading it first — same
+  underlying "repo lives under iCloud Drive" risk factor, different mechanism.
+
 ### 2026-08-11 — Sprint 2
 - **What happened:** `Apin/ApinApp.swift` and `ApinWidget/JournalWidgetStore.swift` hardcoded
   `appGroupIdentifier = "group.com.kv.apin"` (plus a stray `iCloud.com.kv.apin` doc comment),

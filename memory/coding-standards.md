@@ -116,3 +116,14 @@ holding up cleanly across all 18 tasks in Sprint 1 (0 SwiftLint violations at an
   a separate, in-memory, post-fetch filter (one shared function, called at every read call site)
   rather than attempting to fold it into the `#Predicate` — don't rediscover this by reproducing
   the segfault again.
+- **Never commit a pre-existing uncommitted diff without reading it first (added Sprint 3, see
+  `memory/lessons-learned.md`)**: before staging or committing any working-tree diff you didn't
+  personally author in this session — including a diff that looks like leftover work from a prior
+  cycle — `git diff` and read every hunk's actual content. Do not infer what the diff contains from
+  a commit message you're about to write, from what a `memory/` file's narrative says was already
+  fixed, or from the filenames alone. This applies with extra weight to security/identity-sensitive
+  literals (App Group IDs, bundle IDs, iCloud container IDs) and to any file class with a documented
+  history of drift. Cycle 3's `042452c` commit was titled as a fix and cited the exact right file
+  set from `memory/technical-debt.md`'s "resolved" narrative, but its actual diff ran backwards and
+  reintroduced a launch-blocking regression that had already been fixed once — only caught by the
+  next `/qa` pass's independent test re-run, not by anything at commit time.

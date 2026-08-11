@@ -18,6 +18,53 @@ Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### Sprint 3 — 2026-08-11 (cycle 3, personality content + human-in-the-loop device verification)
+- **Goal:** Ship the personality brief content swap (closing spec open question #2) and produce
+  three precise manual verification scripts for Kv to execute on the physical iPhone 17 (zero-
+  network, Indonesian fluency, Siri/Spotlight latency), plus a contingent follow-up to record
+  results once Kv reports back — a deliberately small cycle, no new architecture, per
+  `planning/engineering-plan.md`.
+- **Shipped:** T1 (personality brief content swap — name framed as an "Apple Intelligence" pun,
+  tone playful/cheerful, voice modeled on Crow Armbrust from *Trails of Cold Steel*: witty,
+  charming, mercenary-rogue energy, quips over lectures, cocky but likable, still always answers
+  directly), T2/T3/T4 (three self-contained manual verification scripts under
+  `review/manual-verification/`, each with concrete pass/fail criteria and a blank Result section
+  for Kv to fill in). Also closed, via Kv's confirmation in chat rather than code: the
+  retention/archiving policy (spec open question #4, keep current keep-forever/manual-delete
+  behavior) and T13's Spotlight/Siri auto-submit UX (spec open question #3 partial, keep current
+  behavior) — both had been re-flagged as still-open every cycle since first shipped as
+  assumptions. Also: the long-standing, git-tracked stray `Apin 2.xcodeproj` (flagged four times
+  since Sprint 1) was confirmed with Kv and removed in a standalone commit (`1b8147f`) before this
+  cycle's `/plan` ran.
+- **Not shipped:** T5 (record Kv's device-verification results) — stays `blocked`; Kv has not yet
+  executed T2/T3/T4's scripts on the physical iPhone 17 or reported results. Third consecutive
+  cycle this class of item hasn't fully closed (cycle 1: no hardware; cycle 2: no device-driving
+  tooling; cycle 3: scripts exist, execution now depends only on Kv's own time). See
+  `memory/decisions.md`'s 2026-08-11 "device verification: scripts produced and handed off" entry.
+- **QA verdict:** Passed, **ready for release — a first for this project** (prior two cycles'
+  verdicts were explicitly "not release-ready" for different reasons each time). 131/131 tests
+  passing (98 `ApinCoreTests` + 26 `ApinTests` + 7 `ApinWidgetTests`, same total as cycle 2's end
+  state — T1 is content-only, T2–T4 are documentation, no new automated tests expected or added);
+  `swiftlint lint --strict` 0 violations across 84 files; full clean builds (Debug simulator +
+  `ApinCore`) succeed. This was a **two-pass `/qa` cycle**: the first pass found a release-blocking
+  regression unrelated to T1–T4's own scope (see below), which was fixed and then independently
+  re-verified from scratch by a second `/qa` pass before the "ready for release" verdict was given.
+- **Notable decisions:** No new ADR this cycle (content/decisions/incident-response only, nothing
+  rising to lasting-architectural-impact). See `memory/decisions.md` for the personality brief,
+  retention policy, and T13 auto-submit resolutions, plus the device-verification handoff update.
+  **Incident, not a planned decision:** at cycle start, the orchestrating session committed a
+  pre-existing uncommitted working-tree diff (commit `042452c`) on the assumption — taken from
+  `memory/technical-debt.md`'s "resolved (Cycle 2)" narrative for the App Group identifier drift —
+  that it represented cycle 2's already-verified fix, without reading the diff first. The diff
+  actually ran backwards, reintroducing the exact `group.com.kv.apin` launch-crash bug that had
+  already been fixed once. Caught by the first `/qa` pass's independent test re-run, fixed by
+  commit `b7c1536`, and re-verified from scratch by a second `/qa` pass (131/131 tests). See
+  `memory/lessons-learned.md`'s 2026-08-11 Sprint 3 entry (new failure mode, distinct from the
+  Sprint 1 iCloud-Drive-parallelism entry) and the new standing rule in
+  `memory/coding-standards.md` ("never commit a pre-existing uncommitted diff without reading it
+  first"). `memory/technical-debt.md`'s App Group entry carries a Cycle-3 addendum noting the
+  regression-and-refix (status remains resolved, not reopened).
+
 ### Sprint 2 — 2026-08-11 (cycle 2, hardening + open-decision closure)
 - **Goal:** Close the four release-readiness gaps carried in `memory/technical-debt.md`, resolve
   or re-confirm the four open product/UX decisions in `memory/decisions.md` plus spec open
