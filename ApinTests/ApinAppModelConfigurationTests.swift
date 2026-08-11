@@ -23,7 +23,7 @@ final class ApinAppModelConfigurationTests: XCTestCase {
     func test_appGroupIdentifier_matchesWidgetSideValue() {
         // Keep in sync with `ApinWidget/JournalWidgetStore.appGroupIdentifier` and the
         // `com.apple.security.application-groups` entitlement on both targets (project.yml).
-        XCTAssertEqual(ApinApp.appGroupIdentifier, "group.com.apin.app")
+        XCTAssertEqual(ApinApp.appGroupIdentifier, "group.com.kv.apin")
     }
 
     func test_storeFileName_matchesWidgetSideValue() {

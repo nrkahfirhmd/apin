@@ -9,7 +9,7 @@ final class JournalWidgetStoreTests: XCTestCase {
     func test_appGroupIdentifier_matchesConfiguredEntitlement() {
         // Keep in sync with `com.apple.security.application-groups` in both targets'
         // entitlements (see `project.yml`).
-        XCTAssertEqual(JournalWidgetStore.appGroupIdentifier, "group.com.apin.app")
+        XCTAssertEqual(JournalWidgetStore.appGroupIdentifier, "group.com.kv.apin")
     }
 
     func test_makeModelContainer_neverCrashes() {

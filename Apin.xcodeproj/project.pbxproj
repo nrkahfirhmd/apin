@@ -16,7 +16,7 @@
 		29A9A574A030298CB879CA19 /* AskAndSaveServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */; };
 		30C62E71DEBC631BFA916B13 /* FakeJournalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEBFEC94762CA4CF7EE2417 /* FakeJournalRepository.swift */; };
 		3830FF3F14B7D490A5A89358 /* ApinWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */; };
-		4615AA952763438B97C26E23 /* ApinWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4615AA952763438B97C26E23 /* ApinWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4652B99380405A789ECFD42E /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F14A290F7DCDF75BD74141 /* AskView.swift */; };
 		48C649A6F1BEC165E2B56C8B /* JournalTagFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D414C98D4502E9BE3D9F00 /* JournalTagFilterView.swift */; };
 		57AB36E97B6C88289C395056 /* AskViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0938D36112AD147B50397E9D /* AskViewModelTests.swift */; };
@@ -79,7 +79,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				4615AA952763438B97C26E23 /* ApinWidgetExtension.appex in Embed Foundation Extensions */,
+				4615AA952763438B97C26E23 /* ApinWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,13 +107,13 @@
 		6C1E3F21C047DE406304F73D /* Apin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Apin.entitlements; sourceTree = "<group>"; };
 		70B8C02BD22060A2F13FE633 /* AskApinShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskApinShortcutsProvider.swift; sourceTree = "<group>"; };
 		7F9F5BE63677E434036F5A0E /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
-		82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ApinWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ApinWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveServiceTests.swift; sourceTree = "<group>"; };
 		8B28B5DC4DA1C02623C3535F /* ApinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinApp.swift; sourceTree = "<group>"; };
-		96322F77844ED3D7821A943F /* Apin.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Apin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		986928276723CE5C1489332F /* ApinTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ApinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96322F77844ED3D7821A943F /* Apin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Apin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		986928276723CE5C1489332F /* ApinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalScaffold.swift; sourceTree = "<group>"; };
-		9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ApinWidgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApinWidgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A25A44ABF199FFC7B8988C07 /* ApinWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidget.swift; sourceTree = "<group>"; };
 		A98ECDA61B464AC3D68113A8 /* ApinWidgetEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetEntryTests.swift; sourceTree = "<group>"; };
 		AA9CC9F6186F109B85D840CD /* ApinWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetProvider.swift; sourceTree = "<group>"; };
@@ -122,7 +122,7 @@
 		B7D414C98D4502E9BE3D9F00 /* JournalTagFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTagFilterView.swift; sourceTree = "<group>"; };
 		B7F14A290F7DCDF75BD74141 /* AskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskView.swift; sourceTree = "<group>"; };
 		BD9A29E202FCE56556278EF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C51B6CD3025F19C8EEF99D6A /* ApinCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ApinCore; path = ApinCore; sourceTree = SOURCE_ROOT; };
+		C51B6CD3025F19C8EEF99D6A /* ApinCore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ApinCore; sourceTree = SOURCE_ROOT; };
 		D120773962363B4FDBDC9144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCapabilityGate.swift; sourceTree = "<group>"; };
 		DDBE1D77A19D707D404ADA9F /* WidgetsScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsScaffold.swift; sourceTree = "<group>"; };
@@ -218,7 +218,7 @@
 			children = (
 				96322F77844ED3D7821A943F /* Apin.app */,
 				986928276723CE5C1489332F /* ApinTests.xctest */,
-				82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */,
+				82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */,
 				9FB38EBCC6F4353133B4D160 /* ApinWidgetTests.xctest */,
 			);
 			name = Products;
@@ -392,7 +392,7 @@
 				460256CE5DC28F7B00A6ACA5 /* ApinCore */,
 			);
 			productName = ApinWidgetExtension;
-			productReference = 82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */;
+			productReference = 82C8E312B44FC6EAA092BC70 /* ApinWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		C5B29B27D0828B3973930731 /* ApinWidgetTests */ = {
@@ -614,6 +614,7 @@
 				CODE_SIGN_ENTITLEMENTS = ApinWidget/ApinWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ApinWidget/Info.plist;
@@ -625,7 +626,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget;
 				PRODUCT_NAME = ApinWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -638,6 +639,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -645,7 +647,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.tests;
 				PRODUCT_NAME = ApinTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -723,6 +725,7 @@
 				CODE_SIGN_ENTITLEMENTS = ApinWidget/ApinWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ApinWidget/Info.plist;
@@ -734,7 +737,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget;
 				PRODUCT_NAME = ApinWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -747,6 +750,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -754,7 +758,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget.tests;
 				PRODUCT_NAME = ApinWidgetTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -766,6 +770,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -773,7 +778,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.tests;
 				PRODUCT_NAME = ApinTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -791,14 +796,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Apin/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Apin;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIBackgroundModes = (
-					"remote-notification",
-				);
+				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -806,7 +810,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin;
 				PRODUCT_NAME = Apin;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -818,6 +822,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -825,7 +830,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app.ApinWidget.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin.ApinWidget.tests;
 				PRODUCT_NAME = ApinWidgetTests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
@@ -842,14 +847,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 84L3QCBHMU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Apin/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Apin;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIBackgroundModes = (
-					"remote-notification",
-				);
+				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -857,7 +861,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apin.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kv.apin;
 				PRODUCT_NAME = Apin;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
