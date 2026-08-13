@@ -19,6 +19,35 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
 
 <!-- Entries below this line -->
 
+### Every successful ask now makes a second, sequential on-device model call before saving
+- **Where:** `Apin/Features/Ask/AskAndSaveService.swift`, `streamAndSave(prompt:)`'s
+  `autoTags(from:prompt:)` helper.
+- **What was skipped:** T4 (Cycle 5, Stage A) seeds `JournalEntry.tags` from
+  `AssistantSessionService.sendStructured(prompt:)`'s output, called *after* the primary answer
+  stream finishes and *before* the save completes — a deliberate, scoped design choice (additive,
+  not rewiring the primary stream), not an oversight, per `planning/engineering-plan.md` v1.4's
+  Architecture Decisions. No caching, batching, or single-call combination with the primary
+  stream was attempted this cycle.
+- **Risk if unaddressed:** Every successful ask now costs a second on-device model inference,
+  adding real, permanent latency and battery cost to the save path — a small but non-zero,
+  every-single-ask tax on the product's core loop. Mitigated by a confirmed-graceful failure mode:
+  `autoTags` returns `[]` on any `sendStructured` failure (both the `.failure` `Result` case and
+  the `#else` non-`FoundationModels` branch), so a failed/slow tags call cannot fail or hang the
+  primary save — verified directly by reading `AskAndSaveService.swift` and by two dedicated unit
+  tests (`AskAndSaveServiceTests.swift`: tags-seeded-on-success, empty-tags-on-failure-without-
+  failing-the-stream), independently re-confirmed by both `/review` and `/qa`. The risk is cost,
+  not correctness or reliability.
+- **Effort to fix:** Medium, if ever pursued — would need Foundation Models' guided generation to
+  produce the answer *and* tags in one call (the framework may support this — worth checking
+  against `AskResponse`'s existing `answer`/`tags` fields, which already coexist in one
+  `@Generable` type, before assuming a redesign is needed), or accepting the two-call cost as a
+  permanent trade-off if user-perceived latency stays acceptable.
+- **Opened:** Cycle 5, T4. Flagged explicitly in T4's own completion notes (per its task
+  instructions) and by both `/review` and `/qa`, not silently absorbed.
+- **Status:** open (accepted trade-off, not a defect) — revisit if Stage B's (next cycle) actual
+  UI/UX testing surfaces user-perceptible latency, since that's the first point real usage data on
+  perceived cost would exist.
+
 ### No DB-level uniqueness guarantee on JournalEntry.id post-CloudKit
 - **Where:** `ApinCore/Sources/Persistence/JournalEntry.swift`
   (`SwiftDataJournalRepository.fetch(by:)`/`delete(id:)`)
@@ -167,6 +196,14 @@ Known shortcuts and their cost. Checked by the `planner` subagent before every n
   (resolved, Cycle 3) — that entry was about a *tracked* duplicate with a stale, wrong bundle
   identifier; this entry is about *untracked, gitignored* shadow copies that regenerate on their own
   and were never git-tracked at all.
+  - **Cycle 5 addendum (reconfirmed unchanged, not reopened/resolved):** independently
+    re-inspected by T2's task-runner, `/review`, and `/qa`, all three separately — both
+    directories still contain only `xcuserdata`/`xcshareddata` (no `project.pbxproj`), confirming
+    they're genuinely inert and not a live duplicate project. No new stray duplicates appeared
+    from this cycle's 3-wave parallel `task-runner` sweep. This is now the second consecutive
+    cycle (4 and 5) this exact diagnosis has held — worth Kv's awareness that the underlying
+    iCloud+Xcode regeneration behavior described above remains the only durable fix, same as
+    previously noted.
 
 ### (Resolved during cycle, not open debt — historical record) `.gitignore` bare `*.md` defect
 - **Where:** repo-root `.gitignore`, line 1, introduced by T1's scaffolding.

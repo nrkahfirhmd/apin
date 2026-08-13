@@ -5,10 +5,15 @@
 // `AssistantSessionServiceTests` (T4) so error-handling paths (timeout,
 // unavailable, refusal, etc.) can be unit-tested without a live on-device
 // FoundationModels session. Model *content* is deliberately not exercised here —
-// only fixed/controlled strings and errors.
+// only fixed/controlled strings and errors. `structuredRespondBehavior` (Cycle
+// 5's T2) extends this the same way for `respondStructured(to:)`.
 
 import Foundation
 @testable import ApinCore
+
+#if canImport(FoundationModels)
+import FoundationModels
+#endif
 
 @available(iOS 26.0, macOS 26.0, visionOS 26.0, *)
 final class FakeLanguageModelSession: LanguageModelSessionProviding, @unchecked Sendable {
@@ -52,4 +57,38 @@ final class FakeLanguageModelSession: LanguageModelSessionProviding, @unchecked 
             }
         }
     }
+
+    #if canImport(FoundationModels)
+    enum StructuredRespondBehavior {
+        case success(AskResponse)
+        case failure(Error)
+        /// Never returns within any reasonable test timeout, to exercise
+        /// `AssistantSessionService`'s own timeout enforcement.
+        case hang
+    }
+
+    var structuredRespondBehavior: StructuredRespondBehavior = .success(
+        AskResponse(
+            answer: "stub answer",
+            followUpQuestion: "stub follow-up?",
+            chips: ["chip a", "chip b"],
+            tags: ["stub"]
+        )
+    )
+
+    private(set) var receivedStructuredPrompts: [String] = []
+
+    func respondStructured(to prompt: String) async throws -> AskResponse {
+        receivedStructuredPrompts.append(prompt)
+        switch structuredRespondBehavior {
+        case .success(let value):
+            return value
+        case .failure(let error):
+            throw error
+        case .hang:
+            try await Task.sleep(nanoseconds: .max)
+            return AskResponse(answer: "", followUpQuestion: "", chips: [], tags: []) // unreachable in practice.
+        }
+    }
+    #endif
 }

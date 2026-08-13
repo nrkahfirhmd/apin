@@ -17,6 +17,42 @@ subagent after `/review` and `/qa` each cycle. Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### 2026-08-12 — Sprint 5
+- **What happened:** Two related-but-distinct issues surfaced this cycle. (1) T2 added
+  `sendStructured(prompt:)` to `AssistantSessionProviding` — a real, necessary protocol change,
+  entirely within T2's own scope. But `ApinTests/FakeAssistantSession.swift`, an existing test
+  double conforming to that protocol, was outside *both* T2's scope (it's an app-target test file,
+  T2 was `ApinCore`-scoped) and T5's scope (T5 touched `ContentView`/`AskView`/`JournalListView`,
+  not test doubles) — so neither task-runner updated it, and it silently stopped compiling until
+  T5's task-runner happened to run a full `xcodebuild build-for-testing` and caught the break.
+  (2) Separately, fixing 7 SwiftLint `identifier_name` violations in `Apin/DesignSystem/ApinFont.swift`/
+  `ApinColor.swift` took two failed attempts before landing: a `// swiftlint:disable:next` line
+  placed between a `///` doc comment and its declaration breaks `orphaned_doc_comment` (the doc
+  comment is no longer adjacent to the declaration); placed *before* the doc comment, `:next`
+  silences the doc-comment line instead of the declaration, producing a `superfluous_disable_command`
+  warning. Both are now documented as a coding standard — see `memory/coding-standards.md`.
+- **Root cause:** (1) A protocol conformance change was scoped narrowly and correctly per its own
+  task, but nothing in the task-graph/review process explicitly checks "does any *other* file
+  outside every task's own scope also conform to this protocol and now need updating?" — this
+  only surfaces if some task's own build verification happens to include the broken file, which
+  isn't guaranteed. (2) SwiftLint's `:next` disable-command semantics (silences exactly the next
+  line) and `orphaned_doc_comment`'s adjacency requirement were not obvious from the rule names
+  alone and had to be discovered by direct trial.
+- **Fix applied:** (1) The orchestrator added the missing conformance to `FakeAssistantSession.swift`
+  directly (small, mechanical, same shape as the existing `send`/`sendBehavior` pair), re-verified
+  by an independent `build-for-testing` run, then by `/review`. (2) Landed on: plain `//`
+  description comment(s), then `// swiftlint:disable:next <rule>` immediately above the
+  declaration, no `///` doc comment on lines needing a disable directive.
+- **Prevent next time:** When a task changes a protocol's requirements, the task-graph or the
+  reviewer's ground-truth pass should explicitly grep for *all* conformances to that protocol
+  (`grep -rn ": ProtocolName\b"` or similar), not just the conformances the changing task itself
+  intends to touch — test doubles in particular are easy to miss since they're often outside any
+  single task's stated file scope. Added to `memory/coding-standards.md`'s "Standards added from
+  lessons learned" as the SwiftLint disable-command ordering rule; this protocol-conformance-sweep
+  practice is recorded here as a process lesson rather than a hard rule, since it didn't cause
+  lasting harm this cycle (caught same-day, before `/review` even ran) — worth promoting to a
+  standing coding-standards check if it recurs.
+
 ### 2026-08-11 — Sprint 3
 - **What happened:** At the start of this cycle, the orchestrating session found
   `Apin.xcodeproj/project.pbxproj`, `Apin/Apin.entitlements`, `Apin/ApinApp.swift`,

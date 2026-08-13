@@ -107,4 +107,46 @@ final class AskAndSaveServiceTests: XCTestCase {
         XCTAssertNotNil(thrown)
         XCTAssertTrue(repository.savedEntries.isEmpty)
     }
+
+    // MARK: - Auto-tags seeding (Cycle 5 T4)
+
+    #if canImport(FoundationModels)
+    func testSuccessfulStructuredCallSeedsSavedEntryTags() async throws {
+        let session = FakeAssistantSession()
+        session.streamValues = ["Hello there"]
+        session.structuredBehavior = .success(
+            AskResponse(
+                answer: "Hello there",
+                followUpQuestion: "anything else?",
+                chips: [],
+                tags: ["gratitude", "morning"]
+            )
+        )
+        let repository = FakeJournalRepository()
+        let service = AskAndSaveService(assistantSession: session, journalRepository: repository)
+
+        for try await _ in service.streamAndSave(prompt: "hi") {}
+
+        XCTAssertEqual(repository.savedEntries.count, 1)
+        XCTAssertEqual(repository.savedEntries.first?.tags, ["gratitude", "morning"])
+    }
+
+    func testFailedStructuredCallSavesEntryWithEmptyTagsAndDoesNotFailTheStream() async throws {
+        let session = FakeAssistantSession()
+        session.streamValues = ["Hello there"]
+        session.structuredBehavior = .failure(AssistantResponseError(kind: .refusal, debugDescription: "declined"))
+        let repository = FakeJournalRepository()
+        let service = AskAndSaveService(assistantSession: session, journalRepository: repository)
+
+        var received: [String] = []
+        for try await partial in service.streamAndSave(prompt: "hi") {
+            received.append(partial)
+        }
+
+        XCTAssertEqual(received, ["Hello there"])
+        XCTAssertEqual(repository.savedEntries.count, 1)
+        XCTAssertEqual(repository.savedEntries.first?.answer, "Hello there")
+        XCTAssertEqual(repository.savedEntries.first?.tags, [])
+    }
+    #endif
 }

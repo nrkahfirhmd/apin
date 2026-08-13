@@ -10,6 +10,13 @@
 //
 // Does NOT build the personality content itself (T5) and does NOT build any UI
 // (T7) — this is purely the "talk to the model" seam. See tasks/task-graph.md T4.
+//
+// `sendStructured(prompt:)` (Cycle 5's T2) additively extends this seam with a
+// guided-generation entry point producing `AskResponse` (answer + follow-up
+// question + chips + tags) instead of a plain `String`. It is purely additive:
+// `send(prompt:)`/`streamResponse(prompt:)` are unchanged in signature and
+// behavior. See `AskResponse.swift` for the shape and the Apple-doc/.swiftinterface
+// verification this was built against.
 
 import Foundation
 
@@ -90,6 +97,33 @@ public final class AssistantSessionService: Sendable {
             continuation.onTermination = { _ in task.cancel() }
         }
     }
+
+    #if canImport(FoundationModels)
+    /// Sends `prompt` and awaits a structured `AskResponse` (answer + follow-up
+    /// question + chips + tags), bounded by `timeout`, via FoundationModels'
+    /// guided generation. Additive counterpart to `send(prompt:)` — does not
+    /// change `send(prompt:)`/`streamResponse(prompt:)`'s existing behavior.
+    ///
+    /// Streaming note (Cycle 5's T2 finding): FoundationModels' streaming path
+    /// *does* support incremental partial-`@Generable` snapshots
+    /// (`LanguageModelSession.streamResponse(to:generating:)`, yielding
+    /// `Content.PartiallyGenerated` snapshots with every property optional) —
+    /// confirmed directly against this machine's installed Xcode 26.6
+    /// `FoundationModels.swiftinterface`. A streaming counterpart to this method
+    /// is deferred to a later task/UI (see `AskResponse.swift`'s header); this
+    /// method covers the "obtainable from one call" requirement via the awaited
+    /// (non-streaming) `respond(to:generating:)` path.
+    public func sendStructured(prompt: String) async -> Result<AskResponse, AssistantResponseError> {
+        do {
+            let value = try await withTimeout(seconds: timeout) { [session] in
+                try await session.respondStructured(to: prompt)
+            }
+            return .success(value)
+        } catch {
+            return .failure(Self.mapError(error))
+        }
+    }
+    #endif
 
     // MARK: - Error mapping
 

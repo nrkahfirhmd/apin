@@ -112,8 +112,13 @@ whenever a task adds, changes, or deprecates an endpoint/interface.
   `AssistantSessionProviding`-conforming session and a `JournalRepository`; success path
   produces exactly one saved `JournalEntry`, failure path saves nothing.
 - **Response:** the produced answer/`JournalEntry` on success, or a thrown/mapped error on
-  failure (no partial saves).
-- **Added in:** T8 (Sprint 1).
+  failure (no partial saves). **Updated Cycle 5 (T4):** the saved `JournalEntry.tags` is no
+  longer always `[]` — `streamAndSave(prompt:)` now makes an additional, separate
+  `assistantSession.sendStructured(prompt:)` call once the primary answer stream finishes
+  successfully, and seeds `tags:` from its `.tags` output (`[]` on any failure of that second
+  call — the primary answer save is never blocked or failed by it). This is an additive
+  behavior change, not a signature change.
+- **Added in:** T8 (Sprint 1). Extended by T4 (Cycle 5, Stage A — auto-tag seeding, see above).
 - **Status:** stable, but **located in the `Apin` app target, not `ApinCore`** — a deliberate
   deviation from the original plan wording, see
   `memory/adrs/001-app-intents-split-across-apincore-and-app-target.md`. T13/T17 currently reach
@@ -121,6 +126,88 @@ whenever a task adds, changes, or deprecates an endpoint/interface.
   calling it directly; a future inline-answer feature (T15-style) would need to relocate or
   otherwise expose this to `ApinCore` before an `AppIntent.perform()` could call it without
   going through the app UI.
+
+### struct AskResponse (`@Generable`)
+- **Purpose:** Structured, guided-generation output shape for a single ask — the answer plus
+  Apin's personality-driven follow-up question, suggested reply chips, and topic tags, all
+  produced by one on-device model call rather than parsed from a delimited string convention.
+- **Auth:** N/A.
+- **Request / Params:** N/A (this is a response shape, not a request). Fields:
+  `answer: String`, `followUpQuestion: String`, `chips: [String]` (2-4, `@Guide(.count(2...4))`),
+  `tags: [String]` (1-5, `@Guide(.count(1...5))`). Public memberwise `init` is hand-written — the
+  `@Generable` macro does not synthesize a public initializer for a `public` type (confirmed via
+  macro-expansion dump, see `memory/adrs/004-structured-generation-supports-partial-streaming.md`).
+- **Response:** N/A (see Request/Params — this type *is* the response shape).
+- **Added in:** T2 (Cycle 5, Stage A). `ApinCore/Sources/AI/AskResponse.swift`, `#if
+  canImport(FoundationModels)`-gated.
+- **Status:** stable/new. No UI consumer yet — the follow-up-chips/message-history UI that will
+  render `followUpQuestion`/`chips` is deferred Stage B item 9 (next cycle); T4 (Cycle 5) is the
+  only current consumer, and only of `.tags`.
+
+### AssistantSessionService.sendStructured(prompt:) / AssistantSessionProviding.sendStructured(prompt:)
+- **Purpose:** The structured-generation counterpart to `send(prompt:)`/`streamResponse(prompt:)`
+  — produces one `AskResponse` per call via Foundation Models' guided generation
+  (`@Generable`/`@Guide`), additive alongside the existing plain-`String` methods, which are
+  unchanged in signature and behavior.
+- **Auth:** N/A.
+- **Request / Params:** `sendStructured(prompt: String) async -> Result<AskResponse,
+  AssistantResponseError>`. Mirrored exactly on `Apin/Features/Ask/AssistantSessionProviding.swift`
+  (app-target protocol), per that file's own "mirrors `AssistantSessionService`'s API exactly"
+  design, and on the fake test double `ApinTests/FakeAssistantSession.swift`
+  (`structuredBehavior`/`receivedStructuredPrompts`, same success/failure shape as the existing
+  `sendBehavior`/`receivedPrompts` pair).
+- **Response:** `Result<AskResponse, AssistantResponseError>` — reuses
+  `AssistantSessionService.mapGenerationError`'s existing `LanguageModelSession.GenerationError`
+  handling unchanged in shape, just reachable from this new entry point too.
+- **Added in:** T2 (Cycle 5, Stage A). `ApinCore/Sources/AI/AssistantSessionService.swift`,
+  `ApinCore/Sources/AI/LanguageModelSessionProviding.swift` (new
+  `respondStructured(to:)` on the seam, implemented by `FoundationModelsSessionAdapter` via
+  `session.respond(to:generating:)`), `Apin/Features/Ask/AssistantSessionProviding.swift`.
+  `#if canImport(FoundationModels)`-gated throughout, matching `AskResponse` itself.
+- **Status:** stable/new, additive-only — `AssistantSessionService` had no prior `apis.md` entry
+  even before this cycle (an existing gap, not introduced by Cycle 5); this entry now covers both
+  of its public entry points. No non-streaming structured-generation UI consumer this cycle
+  besides T4's tags-seeding call (see `AskAndSaveServicing` above). Partial-structured **streaming**
+  is confirmed supported by the underlying framework but not yet exposed through this seam — see
+  `memory/adrs/004-structured-generation-supports-partial-streaming.md`.
+
+### JournalExcerpt.firstSentence(from:)
+- **Purpose:** Derives a first-sentence excerpt from a `JournalEntry.answer` string at
+  render/query time — the design handoff's Journal entry row shows an excerpt, and this avoids a
+  stored, persisted excerpt column (no schema/migration change needed).
+- **Auth:** N/A.
+- **Request / Params:** `JournalExcerpt.firstSentence(from answer: String) -> String`. Plain,
+  non-SwiftUI-importing static function, same pattern as `JournalDigest.compute(from:...)`. Rule:
+  trims whitespace/newlines, then finds the first `.`/`!`/`?` immediately followed by
+  whitespace-or-end-of-string; excerpt runs through that terminator. No abbreviation detection
+  (documented limitation, not a bug) — e.g. "e.g." followed by a space still reads as a sentence
+  boundary. Sentence-less input returns the full trimmed string as-is (no truncation); empty/blank
+  input returns `""`.
+- **Response:** `String` (see Request/Params for the exact derivation rule).
+- **Added in:** T3 (Cycle 5, Stage A). `ApinCore/Sources/Persistence/JournalExcerpt.swift`. No
+  UI consumer yet — the Journal row that will actually render this excerpt is deferred Stage B
+  item 10 (next cycle).
+- **Status:** stable/new. Unit-tested (`JournalExcerptTests.swift`) for empty/blank, single-
+  sentence, multi-sentence (stops at first boundary, including a non-boundary decimal-point case),
+  and sentence-less-fallback cases.
+
+### `Apin/DesignSystem/` (ApinColor, ApinFont, ApinIcon, ApinRadius, ApinSpacing)
+- **Purpose:** The design-token layer translated from `design_handoff_apin/apin-green.css`'s
+  `:root` tokens — colors (pre-converted from OKLCH to sRGB component values, source
+  `oklch(...)` string kept as a comment on each constant), spacing, corner radii, and a type
+  scale (SF Pro system font, not bundled Inter, per the handoff's own sanctioned substitution),
+  plus SF Symbol name constants mapped from the handoff's three named Phosphor icons.
+- **Auth:** N/A (not a runtime API — a compile-time constants layer).
+- **Request / Params:** N/A. Five case-less namespace `enum`s, each a flat set of `static let`
+  constants (`ApinColor.bg`, `ApinFont.h1`, `ApinIcon.journal`, `ApinRadius.medium`,
+  `ApinSpacing.space4`, etc.).
+- **Response:** N/A.
+- **Added in:** T1 (Cycle 5, Stage A). Lives in the `Apin` app target only —
+  **never `ApinCore`**, which must never import SwiftUI/UIKit (`memory/coding-standards.md`).
+  Mirrors the `Apin/Common/` cross-cutting-UI-folder pattern.
+- **Status:** stable/new, **zero consumers this cycle** — no `Features/*` view references any of
+  these constants yet. The deferred Stage B (next cycle) pixel-accurate Ask/Journal screen
+  recreation is what will actually consume this layer.
 
 ### protocol JournalEntrySaveSideEffect / protocol JournalEntryDeleteSideEffect
 - **Purpose:** The hook-pattern seam for composing independent, best-effort cross-cutting

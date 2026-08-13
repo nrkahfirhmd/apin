@@ -20,28 +20,55 @@
 // on the array `@Query` already fetched/sorted/keyword-and-date-filtered, so both call sites
 // share the exact same filtering rule and can't drift.
 //
-// See tasks/task-graph.md T9, T10, T11.
+// T5 (Cycle 5): this view now takes a `journalRepository` and gained a toolbar button that
+// presents `WeeklyDigestView` (Apin/Features/Digest) as a sheet — `WeeklyDigestView`'s entry
+// point used to be a toolbar button on `AskView`; per `memory/decisions.md`'s 2026-08-12
+// "WeeklyDigestView's entry point folds into the recreated Journal header" decision, it moves
+// here instead. This is a placeholder location (a plain toolbar button), not its final Stage-B
+// spot near the week-strip — that's deferred to a later cycle's Journal header recreation.
+//
+// This view keeps its own `NavigationStack` below (unchanged) — `ContentView` composes this
+// view alongside `AskView` in a two-tab `TabView` rather than nesting one `NavigationStack`
+// inside another, so each tab keeps exactly one `NavigationStack` as a sibling of the other's,
+// resolving the "should this stack flatten into a shared one" question this file's header used
+// to leave open. See `ContentView.swift`'s header for the composition itself.
+//
+// See tasks/task-graph.md T5 (Cycle 5), T9, T10, T11.
 
 import ApinCore
 import SwiftData
 import SwiftUI
 
 struct JournalListView: View {
+    /// (T5) The same repository `AskView`'s auto-save writes through — handed to the digest
+    /// sheet below. Required (not optional) since every real call site (`ContentView`) has one;
+    /// this view's own preview constructs a real `SwiftDataJournalRepository` against an
+    /// in-memory container, matching `AskView`'s preview pattern.
+    let journalRepository: JournalRepository
+
     @State private var searchText = ""
     @State private var dateRange: ClosedRange<Date>?
     @State private var selectedTag: String?
     @State private var isDateRangeFilterPresented = false
     @State private var isTagFilterPresented = false
+    @State private var isDigestPresented = false
 
     var body: some View {
-        // Owns its own NavigationStack for now since no root navigation composition exists
-        // yet (ContentView is still T1's placeholder). Whichever task composes the app's real
-        // root navigation (T7 or later) should decide whether to keep this stack or flatten it
-        // into a shared one.
+        // Owns its own NavigationStack — see this file's header for why that's fine now that
+        // ContentView composes this view alongside AskView (which also owns its own stack) in a
+        // TabView rather than nesting one inside the other.
         NavigationStack {
             JournalEntryListContent(searchText: searchText, dateRange: dateRange, tag: selectedTag)
                 .navigationTitle("Journal")
                 .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            isDigestPresented = true
+                        } label: {
+                            Label("Weekly Digest", systemImage: "chart.bar.fill")
+                        }
+                        .accessibilityIdentifier("journal.weeklyDigestButton")
+                    }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             isTagFilterPresented = true
@@ -70,6 +97,9 @@ struct JournalListView: View {
                 }
                 .sheet(isPresented: $isTagFilterPresented) {
                     JournalTagFilterView(selectedTag: $selectedTag)
+                }
+                .sheet(isPresented: $isDigestPresented) {
+                    WeeklyDigestView(journalRepository: journalRepository)
                 }
         }
         .searchable(text: $searchText, prompt: "Search question or answer")
@@ -123,6 +153,12 @@ private struct JournalEntryListContent: View {
 }
 
 #Preview {
-    JournalListView()
-        .modelContainer(for: JournalEntry.self, inMemory: true)
+    // Preview-only in-memory store, so this never touches a real on-disk journal — same pattern
+    // as AskView.swift's preview.
+    let container = try! ModelContainer( // swiftlint:disable:this force_try
+        for: JournalEntry.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    return JournalListView(journalRepository: SwiftDataJournalRepository(modelContainer: container))
+        .modelContainer(container)
 }

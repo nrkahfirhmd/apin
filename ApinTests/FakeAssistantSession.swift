@@ -13,6 +13,13 @@
 // tests exercise phase transitions, not save behavior. Save behavior itself is
 // covered separately by `AskAndSaveServiceTests` against `FakeJournalRepository`.
 //
+// Cycle 5 T2 added `sendStructured(prompt:)` to `AssistantSessionProviding`
+// (mirroring `AssistantSessionService`'s additive guided-generation entry point);
+// `structuredBehavior` below is this fake's conformance to that new requirement,
+// same success/failure shape as `sendBehavior`. No existing test exercises this
+// yet — the consumer of structured output (follow-up chips, message history) is
+// still deferred — but the fake must conform for this file to compile.
+//
 // See tasks/task-graph.md T7, T8.
 
 import ApinCore
@@ -31,6 +38,18 @@ final class FakeAssistantSession: AssistantSessionProviding, @unchecked Sendable
     var streamFailure: AssistantResponseError?
 
     private(set) var receivedPrompts: [String] = []
+
+    #if canImport(FoundationModels)
+    enum StructuredBehavior {
+        case success(AskResponse)
+        case failure(AssistantResponseError)
+    }
+
+    var structuredBehavior: StructuredBehavior = .success(
+        AskResponse(answer: "stub answer", followUpQuestion: "stub follow-up?", chips: [], tags: [])
+    )
+    private(set) var receivedStructuredPrompts: [String] = []
+    #endif
 
     func send(prompt: String) async -> Result<String, AssistantResponseError> {
         receivedPrompts.append(prompt)
@@ -55,6 +74,18 @@ final class FakeAssistantSession: AssistantSessionProviding, @unchecked Sendable
             }
         }
     }
+
+    #if canImport(FoundationModels)
+    func sendStructured(prompt: String) async -> Result<AskResponse, AssistantResponseError> {
+        receivedStructuredPrompts.append(prompt)
+        switch structuredBehavior {
+        case .success(let response):
+            return .success(response)
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    #endif
 }
 
 @available(iOS 26.0, macOS 26.0, visionOS 26.0, *)

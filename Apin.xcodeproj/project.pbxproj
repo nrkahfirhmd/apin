@@ -16,6 +16,7 @@
 		29A9A574A030298CB879CA19 /* AskAndSaveServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */; };
 		30C62E71DEBC631BFA916B13 /* FakeJournalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEBFEC94762CA4CF7EE2417 /* FakeJournalRepository.swift */; };
 		3830FF3F14B7D490A5A89358 /* ApinWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */; };
+		3DAAD0153A6F6671C964977F /* ApinSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C657FDA6B1637CBB8B206F /* ApinSpacing.swift */; };
 		4615AA952763438B97C26E23 /* ApinWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4652B99380405A789ECFD42E /* AskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F14A290F7DCDF75BD74141 /* AskView.swift */; };
 		48C649A6F1BEC165E2B56C8B /* JournalTagFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D414C98D4502E9BE3D9F00 /* JournalTagFilterView.swift */; };
@@ -30,6 +31,7 @@
 		951D5514E1F61317ECFF4D07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD9A29E202FCE56556278EF1 /* Assets.xcassets */; };
 		99108FA7DD414006B582EAA0 /* JournalDaySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A663FC481ED844D2C50EC1 /* JournalDaySection.swift */; };
 		9ACCBBD0763D9CBAADDEA3EE /* JournalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F5BE63677E434036F5A0E /* JournalListView.swift */; };
+		9B87F23FF2B993BFF94C123A /* ApinColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE841EEE867AE1C83CB0695 /* ApinColor.swift */; };
 		A19FE26CB4CE03F4C8A702D8 /* FakeAssistantSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEEC7397CAFD3D33C53B664 /* FakeAssistantSession.swift */; };
 		A2109F324367A4DE0E0010C5 /* CapabilityUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10943CDFE9B7123CC4D3323 /* CapabilityUnavailableView.swift */; };
 		A4F16B489414C326A1BEE5C0 /* ApinWidgetEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98ECDA61B464AC3D68113A8 /* ApinWidgetEntryTests.swift */; };
@@ -43,10 +45,13 @@
 		C0F60CB721EA31D91937DBE8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7198F4928EDA8F564909CD3 /* ContentView.swift */; };
 		CCC10510EF1E35781835BE32 /* ApinWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FAC45B78050B791CFED454 /* ApinWidgetBundle.swift */; };
 		CFBED04BDF3EFEF78A5F23EE /* JournalWidgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEDFB87C65130F6A146C79 /* JournalWidgetStore.swift */; };
+		D23C3691C0B07722288588AA /* ApinIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108584A83FD412BCA742B30 /* ApinIcon.swift */; };
+		D71952F48AAF855F848DE84E /* ApinRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E42D40799326DDA280A570D /* ApinRadius.swift */; };
 		D9785860077B18474DD095A6 /* ApinWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9CC9F6186F109B85D840CD /* ApinWidgetProvider.swift */; };
 		DEC16AA6D1975570C28B8FA8 /* ApinWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC48FC647CA735F12E7A3D4 /* ApinWidgetEntryView.swift */; };
 		E37320E7B87AF2ADB7BA1534 /* AssistantSessionProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B4DD16EA1CA803DFDD6BCE /* AssistantSessionProviding.swift */; };
 		E82FEC315B2D031DB8D9DF4B /* JournalScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99984E6A3E8D8CD105860BF5 /* JournalScaffold.swift */; };
+		E94B17DEE2790B0D11707202 /* ApinFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CAC259E96FB14BC587A9A /* ApinFont.swift */; };
 		E965B08A44B7531104C71BF1 /* ApinCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1352D37CBBD1499CBAEAE9C7 /* ApinCore */; };
 		F19AC4B72DA0D993D73A4189 /* WeeklyDigestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF512B5A08837C45D272B98 /* WeeklyDigestView.swift */; };
 		F3CFE0E37D65F5EA04A3EB63 /* AskAndSaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA51B5143725767AEEE81FFF /* AskAndSaveService.swift */; };
@@ -88,8 +93,10 @@
 
 /* Begin PBXFileReference section */
 		0938D36112AD147B50397E9D /* AskViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewModelTests.swift; sourceTree = "<group>"; };
+		1DE841EEE867AE1C83CB0695 /* ApinColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinColor.swift; sourceTree = "<group>"; };
 		2429D3BF3C9C5025A6E7BDCB /* StatusMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMessageView.swift; sourceTree = "<group>"; };
 		2DD5B7EB24295AD277292DC9 /* AskAndSaveServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveServicing.swift; sourceTree = "<group>"; };
+		2E42D40799326DDA280A570D /* ApinRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinRadius.swift; sourceTree = "<group>"; };
 		31AD43BB4197AE17BF5F3814 /* AskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskViewModel.swift; sourceTree = "<group>"; };
 		3926956806509CC3FBE65F1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		41A663FC481ED844D2C50EC1 /* JournalDaySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDaySection.swift; sourceTree = "<group>"; };
@@ -107,6 +114,7 @@
 		6C1E3F21C047DE406304F73D /* Apin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Apin.entitlements; sourceTree = "<group>"; };
 		70B8C02BD22060A2F13FE633 /* AskApinShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskApinShortcutsProvider.swift; sourceTree = "<group>"; };
 		7F9F5BE63677E434036F5A0E /* JournalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalListView.swift; sourceTree = "<group>"; };
+		819CAC259E96FB14BC587A9A /* ApinFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinFont.swift; sourceTree = "<group>"; };
 		82C8E312B44FC6EAA092BC70 /* ApinWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ApinWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		88492B4240E3787C0D86F6BA /* AskAndSaveServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveServiceTests.swift; sourceTree = "<group>"; };
 		8B28B5DC4DA1C02623C3535F /* ApinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinApp.swift; sourceTree = "<group>"; };
@@ -126,11 +134,13 @@
 		D120773962363B4FDBDC9144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D6C4B78BD259E266605C90C5 /* FakeCapabilityGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCapabilityGate.swift; sourceTree = "<group>"; };
 		DDBE1D77A19D707D404ADA9F /* WidgetsScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsScaffold.swift; sourceTree = "<group>"; };
+		E108584A83FD412BCA742B30 /* ApinIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinIcon.swift; sourceTree = "<group>"; };
 		E4FC5D3E649C14DBF0F3764F /* JournalEntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryRow.swift; sourceTree = "<group>"; };
 		E5EEDFB87C65130F6A146C79 /* JournalWidgetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalWidgetStore.swift; sourceTree = "<group>"; };
 		E9FAC45B78050B791CFED454 /* ApinWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetBundle.swift; sourceTree = "<group>"; };
 		EA51B5143725767AEEE81FFF /* AskAndSaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAndSaveService.swift; sourceTree = "<group>"; };
 		F10943CDFE9B7123CC4D3323 /* CapabilityUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapabilityUnavailableView.swift; sourceTree = "<group>"; };
+		F3C657FDA6B1637CBB8B206F /* ApinSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinSpacing.swift; sourceTree = "<group>"; };
 		F6B4DD16EA1CA803DFDD6BCE /* AssistantSessionProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantSessionProviding.swift; sourceTree = "<group>"; };
 		F7198F4928EDA8F564909CD3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FD9D6F06244CDACC85FEDB81 /* ApinWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApinWidgetEntry.swift; sourceTree = "<group>"; };
@@ -235,6 +245,18 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
+		655BEA631FE812ED0EAB4019 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				1DE841EEE867AE1C83CB0695 /* ApinColor.swift */,
+				819CAC259E96FB14BC587A9A /* ApinFont.swift */,
+				E108584A83FD412BCA742B30 /* ApinIcon.swift */,
+				2E42D40799326DDA280A570D /* ApinRadius.swift */,
+				F3C657FDA6B1637CBB8B206F /* ApinSpacing.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
 		6608D59A253353C59FD806E0 /* Ask */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +348,7 @@
 				D120773962363B4FDBDC9144 /* Info.plist */,
 				661AF53298D83D259168280F /* AppIntents */,
 				AA334B9F92706142B49D2885 /* Common */,
+				655BEA631FE812ED0EAB4019 /* DesignSystem */,
 				5E3DECC9F370541BC019A9FC /* Features */,
 			);
 			path = Apin;
@@ -473,6 +496,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B928B16CD600928088CA19E1 /* ApinApp.swift in Sources */,
+				9B87F23FF2B993BFF94C123A /* ApinColor.swift in Sources */,
+				E94B17DEE2790B0D11707202 /* ApinFont.swift in Sources */,
+				D23C3691C0B07722288588AA /* ApinIcon.swift in Sources */,
+				D71952F48AAF855F848DE84E /* ApinRadius.swift in Sources */,
+				3DAAD0153A6F6671C964977F /* ApinSpacing.swift in Sources */,
 				F3CFE0E37D65F5EA04A3EB63 /* AskAndSaveService.swift in Sources */,
 				20F37A81DF41294EF6C508D8 /* AskAndSaveServicing.swift in Sources */,
 				04AF34BFFC33689C6EF3318B /* AskApinShortcutsProvider.swift in Sources */,

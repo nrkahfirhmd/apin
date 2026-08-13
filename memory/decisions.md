@@ -16,6 +16,62 @@ Owner: who/what decided (e.g. "planner agent", "Kv")
 
 <!-- Entries below this line, newest first -->
 
+### 2026-08-12 — Root navigation restructured from a single bare AskView to a two-tab TabView (Ask/Journal)
+Context: `Apin/ContentView.swift` had been "T1's placeholder" since Sprint 1 — it rendered only
+`AskView`, and `JournalListView` was never reachable from the running app at all.
+`planning/engineering-plan.md` v1.4's item 7 (T5, Cycle 5) required real Ask ↔ Journal
+composition, driven by the design handoff's Ask header spec (a journal button with a live entry
+count).
+Decision: T5 implemented this as a two-tab `TabView` (`Ask` default/first tab, `Journal` second),
+each keeping its own `NavigationStack` as a sibling — never nested. The Journal tab shows a live
+entry-count `.badge` via a `@Query`-backed count on `ContentView` itself. `WeeklyDigestView`'s
+entry point moved off `AskView`'s toolbar (per the separate "WeeklyDigestView's entry point folds
+into the recreated Journal header" decision below) to a placeholder toolbar button on
+`JournalListView` — functional but not yet in its final Stage-B visual position near the
+week-strip. `AskDeepLinkCoordinator`'s Spotlight/Siri
+prefill-and-submit flow is unaffected: with no `selection:` binding on the `TabView`, Ask remains
+the default/first tab at launch, so its `.onAppear` still fires immediately as before. Verified
+by `/review` and `/qa` independently: `AskDeepLinkCoordinatorTests` (6/6) pass unmodified,
+`AskDeepLinkCoordinator.swift` itself has zero diff this cycle.
+This is a real, lasting structural fact the next cycle's Stage B screen-recreation work needs to
+build on top of, not just this task's implementation detail — the design handoff's pixel-accurate
+Ask/Journal recreation will style this `TabView` composition, not replace it, unless a future
+`/plan` explicitly decides otherwise.
+Owner: task-runner (T5), verified by `/review` + `/qa`.
+
+### 2026-08-12 — Cycle 5 scope confirmed: Stage A (foundation) only this cycle; Stage B (screen recreation) deferred to a follow-up cycle
+Context: `planning/engineering-plan.md` v1.4 (Cycle 5) explicitly surfaced a sizing risk rather
+than deciding it unilaterally — Stage A (design-token layer, structured `@Generable` model
+output, excerpt/auto-tag reconciliation, root nav composition) vs. Stage B (pixel-accurate Ask/
+Journal screen recreation) as one cycle vs. two.
+Decision: Stage A only for Cycle 5. Stage B (backlog items 8-11) is a follow-up-cycle candidate,
+sequenced after Stage A lands and is reviewed. `/tasks` should generate a task graph covering
+Stage A + item 12 (carried-forward Spotlight recheck) only, not Stage B.
+Owner: Kv
+
+### 2026-08-12 — WeeklyDigestView's entry point folds into the recreated Journal header, not kept as an Ask-screen toolbar button
+Context: the design handoff's Ask header spec (wordmark + offline marker left, journal button
+right) has no digest affordance at all, but `WeeklyDigestView` is a shipped feature (cycle 2 T12)
+currently reachable via a toolbar button on `AskView.swift`. `planning/engineering-plan.md`'s
+Open Question 2 asked where it should live once the Ask header is recreated per the handoff.
+Decision: fold the digest entry point into the recreated Journal header, near the new week-strip
+activity chart — closer to the handoff's spirit (digest/streak content living alongside the
+week's activity data) even though not literally specified there. Not the literal handoff spec,
+but Kv's explicit product call. Affects Stage B (item 10, Journal header recreation) and Stage A
+item 7 (root nav composition) — the digest sheet no longer needs a toolbar seam on `AskView`.
+Owner: Kv
+
+### 2026-08-12 — Journal search/date-range/tag filters kept as-is through the Stage B recreation (re-skin only)
+Context: `JournalListView.swift` already ships `.searchable` keyword search plus date-range and
+tag filter toolbar buttons (T10/T11), none of which appear in the design handoff's literal
+Journal layout description (the handoff's own state table lists `search` as "reserved... not yet
+designed"). `planning/engineering-plan.md`'s Open Question 3 asked whether to keep, simplify, or
+relocate them.
+Decision: keep all three filter affordances exactly as they function today; Stage B's Journal
+recreation re-skins them to the token layer but does not simplify, relocate, or remove any of
+them.
+Owner: Kv
+
 ### 2026-08-11 — iOS 26+ / A17 Pro-or-M-series-or-later minimum re-verified a fourth time (T5, Cycle 4), still no discrepancy — standing suggestion to retire the per-cycle check restated
 Context: Routine per-cycle spot-check (spec open question #1), same method as Cycle 2's T9 and
 Cycle 3's re-check (see the 2026-08-11 "iOS 26+ ... re-verified" entry further below) — a fresh

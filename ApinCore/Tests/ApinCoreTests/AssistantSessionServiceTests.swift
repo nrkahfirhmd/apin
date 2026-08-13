@@ -8,7 +8,9 @@
 // *content* is deliberately not tested here (non-deterministic) — only fixed
 // strings and constructed errors.
 //
-// See tasks/task-graph.md T4.
+// See tasks/task-graph.md T4. The "Structured (`sendStructured`)" section below
+// covers Cycle 5's T2 additive guided-generation entry point the same way —
+// structure/error-mapping only, no live-model content assertions.
 
 import Foundation
 import XCTest
@@ -195,6 +197,98 @@ final class AssistantSessionServiceTests: XCTestCase {
             XCTFail("Expected failure", file: file, line: line)
         case .failure(let error):
             XCTAssertEqual(error.kind, expectedKind, file: file, line: line)
+        }
+    }
+
+    // MARK: - Structured (Cycle 5's T2 `sendStructured(prompt:)`)
+    //
+    // Mirrors the plain-`String` coverage above: success path, error-mapping
+    // (reusing `mapGenerationError`, which is unchanged), timeout, and
+    // cancellation. Response *content* is a fixed stub, not exercised for
+    // correctness — only that it round-trips through the seam unmodified.
+
+    func testSendStructuredReturnsSessionResponseOnSuccess() async {
+        let fake = FakeLanguageModelSession()
+        let expected = AskResponse(
+            answer: "The answer.",
+            followUpQuestion: "Want to know more?",
+            chips: ["Tell me more", "No thanks"],
+            tags: ["general"]
+        )
+        fake.structuredRespondBehavior = .success(expected)
+        let service = AssistantSessionService(session: fake)
+
+        let result = await service.sendStructured(prompt: "What is 2+2?")
+
+        switch result {
+        case .success(let value):
+            XCTAssertEqual(value, expected)
+        case .failure(let error):
+            XCTFail("Expected success, got \(error)")
+        }
+        XCTAssertEqual(fake.receivedStructuredPrompts, ["What is 2+2?"])
+    }
+
+    func testSendStructuredMapsHungSessionToTimeout() async {
+        let fake = FakeLanguageModelSession()
+        fake.structuredRespondBehavior = .hang
+        let service = AssistantSessionService(session: fake, timeout: 0.05)
+
+        let result = await service.sendStructured(prompt: "q")
+
+        switch result {
+        case .success:
+            XCTFail("Expected timeout failure")
+        case .failure(let error):
+            XCTAssertEqual(error.kind, .timeout)
+        }
+    }
+
+    func testSendStructuredMapsTaskCancellationToCancelled() async {
+        let fake = FakeLanguageModelSession()
+        fake.structuredRespondBehavior = .hang
+        let service = AssistantSessionService(session: fake, timeout: 5)
+
+        let task = Task { await service.sendStructured(prompt: "q") }
+        task.cancel()
+        let result = await task.value
+
+        switch result {
+        case .success:
+            XCTFail("Expected cancellation failure")
+        case .failure(let error):
+            XCTAssertEqual(error.kind, .cancelled)
+        }
+    }
+
+    func testSendStructuredMapsUnrecognizedErrorToOther() async {
+        let fake = FakeLanguageModelSession()
+        fake.structuredRespondBehavior = .failure(SomeOtherError())
+        let service = AssistantSessionService(session: fake)
+
+        let result = await service.sendStructured(prompt: "q")
+
+        switch result {
+        case .success:
+            XCTFail("Expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.kind, .other)
+        }
+    }
+
+    func testSendStructuredMapsGuardrailViolationToRefusal() async {
+        let context = LanguageModelSession.GenerationError.Context(debugDescription: "blocked by guardrail")
+        let fake = FakeLanguageModelSession()
+        fake.structuredRespondBehavior = .failure(LanguageModelSession.GenerationError.guardrailViolation(context))
+        let service = AssistantSessionService(session: fake)
+
+        let result = await service.sendStructured(prompt: "q")
+
+        switch result {
+        case .success:
+            XCTFail("Expected failure")
+        case .failure(let error):
+            XCTAssertEqual(error.kind, .refusal)
         }
     }
     #endif

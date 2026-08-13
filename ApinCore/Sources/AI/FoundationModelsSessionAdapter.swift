@@ -9,7 +9,9 @@
 // tests.
 //
 // See tasks/task-graph.md T4. Does not build the system-instructions content
-// itself (T5) and does not build any UI (T7).
+// itself (T5) and does not build any UI (T7). `respondStructured(to:)` (Cycle
+// 5's T2) additively wraps `LanguageModelSession.respond(to:generating:)` for
+// guided generation.
 
 import Foundation
 
@@ -50,6 +52,15 @@ public final class FoundationModelsSessionAdapter: LanguageModelSessionProviding
             }
             continuation.onTermination = { _ in task.cancel() }
         }
+    }
+
+    /// Sends `prompt` and awaits a structured `AskResponse`, via
+    /// `LanguageModelSession.respond(to:generating:)` (guided generation).
+    /// Signature/macro syntax verified against this machine's real Xcode 26.6
+    /// `FoundationModels.framework` `.swiftinterface` — see `AskResponse.swift`.
+    public func respondStructured(to prompt: String) async throws -> AskResponse {
+        let response = try await session.respond(to: prompt, generating: AskResponse.self)
+        return response.content
     }
 }
 #endif

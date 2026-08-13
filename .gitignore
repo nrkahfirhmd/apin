@@ -11,3 +11,6 @@ xcuserdata/
 
 # Simulator artifacts / misc
 .DS_Store
+
+# Design handoff reference bundle (not project source)
+design_handoff_apin/

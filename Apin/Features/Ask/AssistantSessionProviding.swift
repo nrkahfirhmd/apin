@@ -12,7 +12,11 @@
 // on-device FoundationModels session (same rationale as T4's own
 // `LanguageModelSessionProviding` seam, one level up the stack).
 //
-// See tasks/task-graph.md T7.
+// See tasks/task-graph.md T7. `sendStructured(prompt:)` (Cycle 5's T2) mirrors
+// `AssistantSessionService`'s additive guided-generation entry point — the
+// consumer of this new structured surface (follow-up chips, message history) is
+// deferred to a later cycle; this file only mirrors the method signature, per
+// this file's own stated design.
 
 import ApinCore
 
@@ -25,6 +29,14 @@ protocol AssistantSessionProviding: Sendable {
     /// Sends `prompt` and returns a stream of cumulative partial responses. Matches
     /// `AssistantSessionService.streamResponse(prompt:)`.
     func streamResponse(prompt: String) -> AsyncThrowingStream<String, Error>
+
+    #if canImport(FoundationModels)
+    /// Sends `prompt` and awaits a structured `AskResponse`. Matches
+    /// `AssistantSessionService.sendStructured(prompt:)`. Gated alongside
+    /// `AskResponse` itself, which only exists when `FoundationModels` can be
+    /// imported (see `ApinCore`'s `AskResponse.swift`).
+    func sendStructured(prompt: String) async -> Result<AskResponse, AssistantResponseError>
+    #endif
 }
 
 @available(iOS 26.0, macOS 26.0, visionOS 26.0, *)

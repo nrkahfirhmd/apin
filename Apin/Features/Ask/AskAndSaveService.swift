@@ -43,23 +43,41 @@ final class AskAndSaveService: AskAndSaveServicing {
     /// Forwards `assistantSession.streamResponse(prompt:)`'s cumulative partial
     /// values unchanged (so a streaming UI sees identical incremental output), and
     /// — only if/when the upstream stream finishes without throwing — saves a new
-    /// `JournalEntry(question: prompt, answer: <last emitted value>)` before
-    /// finishing this stream. If the upstream stream throws, no entry is saved and
-    /// the same error is rethrown unchanged. If the save itself throws (e.g. a
-    /// SwiftData persistence failure), that error is thrown from this stream too —
-    /// callers (like `AskViewModel`) already map any thrown error to a `.failed`
-    /// phase, so this doesn't require special-casing at call sites.
+    /// `JournalEntry(question: prompt, answer: <last emitted value>, tags: <see
+    /// below>)` before finishing this stream. If the upstream stream throws, no
+    /// entry is saved and the same error is rethrown unchanged. If the save itself
+    /// throws (e.g. a SwiftData persistence failure), that error is thrown from
+    /// this stream too — callers (like `AskViewModel`) already map any thrown
+    /// error to a `.failed` phase, so this doesn't require special-casing at call
+    /// sites.
+    ///
+    /// Cycle 5 T4 — `tags:` is seeded from a *separate, additional* call to T2's
+    /// `assistantSession.sendStructured(prompt:)`, made after the streaming loop
+    /// above finishes and the final answer text is known, not by rewiring the
+    /// primary stream itself (that stream's plain-`String`,
+    /// one-cumulative-value-per-emission contract is unchanged, since
+    /// `AskViewModel`/`AskPhase`/`AskView` depend on it exactly as-is). This is a
+    /// deliberate extra on-device model call around save time — a minor added
+    /// latency/battery cost per ask, not silently absorbed — in exchange for
+    /// auto-populated tags as a save-time default. The primary answer save does
+    /// not depend on this call succeeding: any failure (timeout, refusal,
+    /// unavailable, etc.) degrades to `tags: []`, and `JournalEntryDetailView`'s
+    /// existing manual tag add/edit UI remains available regardless as the
+    /// override/fallback path.
     func streamAndSave(prompt: String) -> AsyncThrowingStream<String, Error> {
         let upstream = assistantSession.streamResponse(prompt: prompt)
         return AsyncThrowingStream { continuation in
-            let task = Task { @MainActor [journalRepository] in
+            let task = Task { @MainActor [assistantSession, journalRepository] in
                 do {
                     var latest = ""
                     for try await partial in upstream {
                         latest = partial
                         continuation.yield(partial)
                     }
-                    try await journalRepository.save(JournalEntry(question: prompt, answer: latest))
+                    let tags = await Self.autoTags(from: assistantSession, prompt: prompt)
+                    try await journalRepository.save(
+                        JournalEntry(question: prompt, answer: latest, tags: tags)
+                    )
                     continuation.finish()
                 } catch {
                     continuation.finish(throwing: error)
@@ -67,5 +85,26 @@ final class AskAndSaveService: AskAndSaveServicing {
             }
             continuation.onTermination = { _ in task.cancel() }
         }
+    }
+
+    /// Cycle 5 T4 — resolves the auto-seeded `tags:` for the entry about to be
+    /// saved, via T2's `sendStructured(prompt:)`. `sendStructured` only exists on
+    /// `AssistantSessionProviding` `#if canImport(FoundationModels)` (mirroring
+    /// `AskResponse`'s own gate) — this file has no such gate itself, so the call
+    /// is localized to this helper; outside that gate (a FoundationModels-less
+    /// build/host) this simply returns `[]`, matching `JournalEntry.tags`'s own
+    /// default. Any `.failure` result maps to `[]` too, so a failed/refused/timed
+    /// out structured call never fails the overall save.
+    private static func autoTags(from assistantSession: AssistantSessionProviding, prompt: String) async -> [String] {
+        #if canImport(FoundationModels)
+        switch await assistantSession.sendStructured(prompt: prompt) {
+        case .success(let response):
+            return response.tags
+        case .failure:
+            return []
+        }
+        #else
+        return []
+        #endif
     }
 }

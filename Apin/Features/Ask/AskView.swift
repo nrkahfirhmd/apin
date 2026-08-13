@@ -28,15 +28,19 @@
 // and error states look/feel consistent with Journal's empty state. `.loading`/`.streaming`/
 // `.answered` are unchanged — they were already visibly distinct per T7's acceptance criteria.
 //
-// T12: a toolbar button now presents `WeeklyDigestView` (Apin/Features/Digest) as a sheet, so
-// the weekly digest/streak view is reachable from the running app. Deliberately minimal/additive
-// — no root navigation redesign here (ContentView's own header comment already flags combining
-// Ask + Journal + Digest into a shared root nav as later work, not this task's scope). Only
-// shown when this view has a `journalRepository` to hand the digest screen (i.e. not for the
-// `init(viewModel:)` test/preview seam, which has no repository by default).
+// T5 (Cycle 5): the `WeeklyDigestView` toolbar button/sheet T12 added here is removed — per
+// `memory/decisions.md`'s 2026-08-12 "WeeklyDigestView's entry point folds into the recreated
+// Journal header" decision, the digest entry point no longer lives on `AskView`'s toolbar (it
+// now lives on `JournalListView`'s toolbar, still just a placeholder location pending Stage B's
+// Journal-header recreation). This view no longer needs a `journalRepository` property of its
+// own — the initializer still *takes* one (to build the `.live` view model, same as before), it
+// just doesn't store it anymore. `ContentView` now composes this view alongside `JournalListView`
+// in a two-tab `TabView` (see that file's header) rather than rendering `AskView` as the entire
+// root — this view keeps its own `NavigationStack` below, which is fine under a `TabView` (each
+// tab's stack is a sibling, never nested inside another `NavigationStack`).
 //
-// See tasks/task-graph.md T7, T8, T12, T13, T19 and planning/engineering-plan.md item #7
-// (Req 1, 2), item #12 (Req 11), and item #18 (Req 1, 4, 7).
+// See tasks/task-graph.md T5 (Cycle 5), T7, T8, T13, T19 and planning/engineering-plan.md
+// backlog item #7 (Cycle 5), item #7 (Req 1, 2, Cycle 1), item #12 (Req 11), item #18 (Req 1, 4, 7).
 
 import ApinCore
 import SwiftData
@@ -45,30 +49,20 @@ import SwiftUI
 @available(iOS 26.0, macOS 26.0, visionOS 26.0, *)
 struct AskView: View {
     @State private var viewModel: AskViewModel
-    @State private var isDigestPresented = false
-
-    /// T12's digest screen reads through this the same repository T8's auto-save writes
-    /// through. `nil` for the `init(viewModel:)` test/preview seam, in which case the digest
-    /// toolbar button doesn't render — see `askContent`'s toolbar.
-    private let journalRepository: JournalRepository?
 
     #if canImport(FoundationModels)
     /// Production entry point. `prefilledQuery` is the seam T13's Spotlight/Siri
     /// deep link and T17's widget quick-ask will hand a typed query in through.
-    /// `journalRepository` (T6) is where T8's auto-save writes every successful
-    /// answer, and (T12) what the weekly digest sheet reads from.
+    /// `journalRepository` (T6) is where T8's auto-save writes every successful answer.
     init(prefilledQuery: String = "", journalRepository: JournalRepository) {
         _viewModel = State(wrappedValue: .live(prefilledQuery: prefilledQuery, journalRepository: journalRepository))
-        self.journalRepository = journalRepository
     }
     #endif
 
     /// Test/preview entry point — injects an already-constructed view model (e.g.
-    /// one wired to a fake capability gate/session). `journalRepository` is optional here since
-    /// most existing callers (view-model-level tests) don't need T12's digest sheet.
-    init(viewModel: AskViewModel, journalRepository: JournalRepository? = nil) {
+    /// one wired to a fake capability gate/session).
+    init(viewModel: AskViewModel) {
         _viewModel = State(wrappedValue: viewModel)
-        self.journalRepository = journalRepository
     }
 
     var body: some View {
@@ -124,23 +118,6 @@ struct AskView: View {
             }
             .padding()
             .navigationTitle("Ask")
-            .toolbar {
-                if let journalRepository {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            isDigestPresented = true
-                        } label: {
-                            Label("Weekly Digest", systemImage: "chart.bar.fill")
-                        }
-                        .accessibilityIdentifier("ask.weeklyDigestButton")
-                    }
-                }
-            }
-            .sheet(isPresented: $isDigestPresented) {
-                if let journalRepository {
-                    WeeklyDigestView(journalRepository: journalRepository)
-                }
-            }
         }
     }
 

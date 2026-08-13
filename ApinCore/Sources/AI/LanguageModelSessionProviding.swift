@@ -6,7 +6,9 @@
 // instead of a live on-device model. `FoundationModelsSessionAdapter` is the
 // production conformance backed by the real framework.
 //
-// See tasks/task-graph.md T4.
+// See tasks/task-graph.md T4. `respondStructured(to:)` (Cycle 5's T2) extends
+// this seam additively for guided-generation/`AskResponse` output — it does not
+// change `respond(to:)`/`streamResponse(to:)`'s existing shape or behavior.
 
 import Foundation
 
@@ -27,4 +29,12 @@ public protocol LanguageModelSessionProviding: Sendable {
     /// Matches FoundationModels' `streamResponse` snapshot semantics: each
     /// element is the full text generated so far, not a delta.
     func streamResponse(to prompt: String) -> AsyncThrowingStream<String, Error>
+
+    #if canImport(FoundationModels)
+    /// Sends `prompt` and awaits a structured `AskResponse`, via FoundationModels'
+    /// guided generation (`LanguageModelSession.respond(to:generating:)`). Gated
+    /// alongside `AskResponse` itself, which only exists when `FoundationModels`
+    /// can be imported (see `AskResponse.swift`).
+    func respondStructured(to prompt: String) async throws -> AskResponse
+    #endif
 }

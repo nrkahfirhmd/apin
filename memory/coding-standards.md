@@ -127,3 +127,16 @@ holding up cleanly across all 18 tasks in Sprint 1 (0 SwiftLint violations at an
   set from `memory/technical-debt.md`'s "resolved" narrative, but its actual diff ran backwards and
   reintroduced a launch-blocking regression that had already been fixed once — only caught by the
   next `/qa` pass's independent test re-run, not by anything at commit time.
+- **`// swiftlint:disable:next <rule>` must sit immediately above the declaration it silences, with
+  no `///` doc comment between them (added Sprint 5, see `memory/lessons-learned.md`)**: two real
+  constraints interact here. First, `:next` only silences the single line directly below the
+  disable command — if a doc comment sits between the disable line and the declaration, the
+  disable command has no effect on the declaration and SwiftLint reports a `superfluous_disable_command`
+  warning instead. Second, SwiftLint's `orphaned_doc_comment` rule fires if a `///` doc comment is
+  not immediately followed by the declaration it documents — so putting the disable line *between*
+  a `///` doc comment and the declaration breaks that adjacency and trips a *different* warning.
+  The working pattern: use a plain `//` comment (not `///`) for any description that needs to sit
+  above a disable-command line, with `// swiftlint:disable:next <rule>` as the line immediately
+  above the declaration itself. Confirmed by direct trial-and-error against SwiftLint's actual
+  behavior (not assumed from the rule names alone) while fixing `Apin/DesignSystem/ApinFont.swift`'s
+  `h1`-`h6` and `Apin/DesignSystem/ApinColor.swift`'s `bg` — see those files for the landed pattern.

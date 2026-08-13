@@ -18,6 +18,56 @@ Newest first.
 
 <!-- Entries below this line, newest first -->
 
+### Sprint 5 — 2026-08-12 (cycle 5, design-handoff foundation — Stage A only)
+- **Goal:** A new design handoff (`design_handoff_apin/`, high-fidelity Ask+answer and Journal
+  screen specs) landed after Cycle 4 closed. `/plan` surfaced this as materially larger scope than
+  cycles 2-4 and split it into **Stage A (foundation)** and **Stage B (pixel-accurate screen
+  recreation)**, explicitly flagging the sizing risk rather than deciding unilaterally. Kv
+  confirmed Stage A only for this cycle (see `memory/decisions.md`'s 2026-08-12 entries): a
+  design-token layer, structured `@Generable` model output, an excerpt-derivation helper,
+  auto-tag seeding on save, and root navigation composition — plus item 12 (T6), carried forward
+  unchanged from Cycle 4's still-`blocked` Siri/Spotlight device recheck.
+- **Shipped:** T1 (`Apin/DesignSystem/` — colors/font/icons/radii/spacing translated from
+  `apin-green.css`, zero consumers yet, app-target-only, zero `ApinCore` leakage), T2 (`AskResponse`
+  `@Generable` struct + `AssistantSessionService.sendStructured(prompt:)`, additive, plus a
+  confirmed finding that partial-structured streaming *is* supported by the framework — see
+  `memory/adrs/004-structured-generation-supports-partial-streaming.md`), T3
+  (`JournalExcerpt.firstSentence(from:)`, no schema change), T4 (auto-tags seeded from a second,
+  additional on-device call on every successful ask — see `memory/technical-debt.md`'s new entry
+  on the latency/battery cost this adds), T5 (root nav restructured from a bare `AskView` to a
+  two-tab `TabView`, `WeeklyDigestView`'s entry point relocated off `AskView`'s toolbar per Kv's
+  decision — see `memory/decisions.md`). All 5 tasks landed disjoint-file, zero merge conflicts,
+  one cross-task integration gap (`ApinTests/FakeAssistantSession.swift` needed a new
+  `sendStructured` conformance after T2 shipped, outside both T2's and T5's own scope — fixed by
+  the orchestrator directly after T5 flagged it, independently re-verified by `/review`).
+- **Not shipped:** Stage B (design handoff items 8-11 — pixel-accurate Ask/Journal screen
+  recreation, search/filter re-skin) — deferred to a follow-up cycle by explicit Kv decision, not
+  a slip. T6 (record Kv's execution of the Siri/Spotlight recheck script) stays `blocked` — now
+  the **fifth consecutive cycle** this class of device-verification item hasn't closed (cycles 1-4
+  each carried some version of it forward); worth Kv's attention on whether this should move to a
+  standing, cycle-independent checklist rather than re-entering the sprint-planning loop each time,
+  as cycles 3 and 4's plans both already suggested.
+- **QA verdict:** Passed, ready to close out. 111/111 `ApinCoreTests` (independently re-run by
+  `/qa`, not trusted from `/review`), `swiftlint lint` 0 violations repo-wide (92 files — T1
+  briefly regressed this with 7 undisclosed `identifier_name` warnings, caught by `/review`, fixed
+  and reconfirmed before `/qa` ran), full `Apin` scheme build succeeds unsigned. `ApinTests`
+  (app-target test host, containing `AskViewModelTests`/`AskAndSaveServiceTests`/
+  `AskDeepLinkCoordinatorTests`) compile-verified clean but could not **run** in this sandbox — a
+  pre-existing, already-diagnosed environment gap (`ApinApp.swift:107`'s App Group entitlement
+  `fatalError`, needs real code signing, unrelated to any Cycle 5 source change) — `/qa`
+  reproduced it deliberately to confirm it wasn't new/worse, and separately confirmed
+  `AskDeepLinkCoordinatorTests` (6/6) and `ApinWidgetTests` (7/7) both genuinely ran and passed via
+  paths that don't hit the App Group crash. Zero regressions found.
+- **Notable decisions:** `memory/adrs/004-structured-generation-supports-partial-streaming.md`
+  (new ADR — a verified framework capability with lasting implications for Stage B). Four new
+  `memory/decisions.md` entries (Stage A-only scope, digest-placement, filter-preservation, root-nav
+  restructure). One new `memory/technical-debt.md` entry (T4's per-ask extra model-call cost) plus
+  a reconfirmation addendum on the already-open stray-xcodeproj-husks entry. One new
+  `memory/coding-standards.md` addendum (a SwiftLint `:disable:next`/`orphaned_doc_comment`
+  interaction gotcha, discovered fixing T1's lint regression). `memory/apis.md` gained 4 new
+  entries (`AskResponse`, `AssistantSessionService.sendStructured`, `JournalExcerpt`,
+  `Apin/DesignSystem/`) and one updated entry (`AskAndSaveServicing`'s now-seeded `tags`).
+
 ### Sprint 4 — 2026-08-11 (cycle 4, language-scope closure + Spotlight invocation diagnosis)
 - **Goal:** Ship the now-ungated English-only language-policy content swap (spec open question #5,
   sign-off already recorded in Cycle 4's planning session), re-run the build/metadata App Shortcut
